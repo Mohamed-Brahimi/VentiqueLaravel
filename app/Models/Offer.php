@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Offer extends Model
 {
+    protected $User;
+    protected $Antique;
+
     protected $fillable = [
         'price',
         'dateOffered',
@@ -13,4 +16,16 @@ class Offer extends Model
         'antique_id',
         'user_id'
     ];
+    protected $guarded = [
+        'id'
+    ];
+    public function antique()
+    {
+        return $this->belongsTo(Antique::class);
+    }
+    public function user()
+    {
+        return $this->belongTo(User::class);
+    }
+
 }
