@@ -38,7 +38,7 @@
         <div class="form-group mb-3">
 
             <label for="image">Image:</label>
-            <input name="image" id="image" placeholder="Entrez l'url de votre image" class="form-control"></input>
+            <input type="file" name="image" id="image" accept="image/*">
             <!-- <input type="hidden" name="user_id" value="<?= 1?>" /><br /> -->
         </div>
         <input type="hidden" name="user_id" value="<?= 1?>" /><br />

@@ -22,7 +22,7 @@ class AntiqueSeeder extends Seeder
             $antique->name = $faker->sentence(3);
             $antique->description = $faker->text(200);
             $antique->price = $faker->randomFloat(2, 0, 10000);
-            $antique->image = $faker->imageUrl();
+            $antique->image = $faker->imageUrl(); // This creates external URLs
             $antique->user_id = $faker->randomElement($users);
             $antique->save();
 

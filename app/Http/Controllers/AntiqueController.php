@@ -34,12 +34,20 @@ class AntiqueController extends Controller
                 'name' => 'required',
                 'description' => 'required',
                 'price' => 'required',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]
         );
 
-        Antique::create($request->all());
-        return redirect("/")//->route('antiques.store')
-            ->with('success', 'antique added succesfully');
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('antiques', 'public');
+            $data['image'] = $imagePath;
+        }
+
+        Antique::create($data);
+        return redirect("/")
+            ->with('success', 'antique added successfully');
     }
 
     /**
@@ -88,5 +96,20 @@ class AntiqueController extends Controller
         $antique->delete();
         return redirect()->route('antiques.index')
             ->with('success', 'antique deleted successfully');
+    }
+    public function autocomplete(Request $request)
+    {
+        $search = $request->search;
+        $antiques = Antique::orderBy('name', 'ASC')
+            ->where('name', 'LIKE', "%$search%")
+            ->get();
+        $response = array();
+        foreach ($antiques as $antique) {
+            $response[] = array(
+                'value' => $antique->id,
+                'label' => $antique->name
+            );
+        }
+        return response()->json($response);
     }
 }

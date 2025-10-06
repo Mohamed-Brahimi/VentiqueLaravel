@@ -1,12 +1,186 @@
-@import "tailwindcss";
+.lora-type {
+    font-family: "Lora";
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+body {
+    font-family: "Lora";
+    background-color: #f9e0bb;
+    margin: 0px;
+    color: #2e1d19;
+}
+body a {
+    color: #4d2d25;
+    text-decoration: none;
+    font-weight: bold;
+}
+#contenu {
+    margin: 8px;
+    position: relative;
+}
+#headerSite {
+    background-color: #2e1d19;
+    left: 0px;
+    color: rgb(236, 203, 159);
+    padding-left: 8px;
+    padding-top: 1px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+#titreSite {
+    border-right: solid 2px rgb(177, 137, 84);
+    padding-right: 10px;
+}
 
-@theme {
-    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
-        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-        "Noto Color Emoji";
+#headerSite * {
+    margin: 4px;
+    margin-right: 4px;
+}
+#headerSite a {
+    color: #f9e0bb;
+    text-decoration: none;
+    font-weight: bold;
+}
+#headerSite a:active {
+    color: #f0c38a;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#linkAjouterAntique {
+    background-color: #573831;
+
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 20px;
+    color: #f9e0bb;
+    margin: 10px;
+}
+.button-list {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.button {
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    background-color: #573831;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 20px;
+    color: #f9e0bb;
+    font-weight: normal;
+    cursor: pointer;
+}
+.antique {
+    border: #2e1d19 3px solid;
+    flex-basis: 500px;
+    background-color: #edc58a;
+    min-width: 500px;
+    border-radius: 10px;
+    padding: 1px 14px;
+    margin: 10px;
+}
+.antique-header * {
+    margin: 8px;
+}
+
+.antique-prix {
+    text-align: right;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 8px;
+    margin-top: 0px;
+}
+.container-antiques {
+    display: flex;
+    min-width: 500px;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.antique-enchere {
+    border-bottom: 2px solid #725042;
+}
+
+.container-offres-enchere {
+    display: flex;
+    flex-direction: column;
+}
+
+.container-offres-enchere:nth-child(even) {
+    background-color: #edc58a;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form button {
+    width: 120px;
+    background-color: #4d2d25;
+    color: #f9e0bb;
+    font-weight: bold;
+    font-size: 1em;
+    border: none;
+    padding: 4px;
+}
+
+.login-form button:hover {
+    background-color: #2e1d19;
+    cursor: pointer;
+}
+
+.login-form-erreur {
+    color: rgb(130, 0, 0);
+}
+
+.login-form * {
+    margin: 6px 0px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.form-row * {
+    display: flex;
+    flex-direction: row;
+    margin-right: 4px;
+}
+
+.form-row label {
+    width: 120px;
+}
+
+#connexion {
+    border: 2px solid #edc58a;
+
+    border-radius: 8px;
+    margin-left: auto;
+    float: right;
+}
+#footer {
+    background-color: #2e1d19;
+    color: rgb(236, 203, 159);
+    text-align: center;
+    padding: 0px 0 2px 0;
+    position: relative;
+    bottom: 0px;
+    width: 100%;
+    margin-top: 16px;
+}
+#filler {
+    flex-grow: 1;
+}
+#global {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 100vh;
 }

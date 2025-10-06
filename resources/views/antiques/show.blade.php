@@ -4,10 +4,17 @@
 @section('content')
     <div class="container">
 
-
+        @dump(vars: $antique)
         <div class="row">
             <div class="col-md-12">
-                <h1>{{ $antique->name }} </h1><strong>Crée le: {{ $antique->created_at }} </strong>
+                <h1>{{ $antique->name }} </h1>
+
+                @if ($antique->image)
+                    <div class="image">
+                        <img src="{{ asset('storage/' . $antique->image) }}" alt="{{ $antique->name }}">
+                    </div>
+                @endif
+                <strong>Crée le: {{ $antique->created_at }} </strong>
                 <p class="lead">{{ $antique->description }}</p>
 
                 <div class="buttons">

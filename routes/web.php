@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AntiqueController::class, 'index']);
 
+Route::post(uri: '/autocomplete', action: [AntiqueController::class, 'autocomplete'])->name('autocomplete');
 
 Route::resources([
     'antiques' => AntiqueController::class,
