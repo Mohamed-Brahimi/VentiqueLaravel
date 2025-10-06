@@ -26,24 +26,24 @@
 
 
 
-    <div class="container">
+    <div class="container-antiques">
 
-        <div class="row">
+
 
             @foreach ($antiques->reverse() as $index => $antique)
-                <div class="col-md-4">
-
+                <div class="antique">
+                    <header class="antique-header">
                     <a href="{{ url('antiques/' . $antique->id) }}">
-                        <h2>
+                        <h1 class="antique-nom">
                             {{ $antique->name }}
-                        </h2>
-
+                        </h1>
                     </a>
+                    <h3 class="antique-desc">{{ $antique->description }}</h3>
 
-                    {{ $antique->description }}
-
+                    </header>
+                    <p class="antique-prix">{{ $antique->price }}$</p>
                 </div>
             @endforeach
-        </div>
+
     </div>
 @endsection

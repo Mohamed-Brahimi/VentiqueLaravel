@@ -5,18 +5,21 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-md-12">
-                <h1>{{ $antique->name }} </h1>
+            <div class="antique-enchere">
+                <header>
+                    @if ($antique->image)
+                        <div class="image">
+                            <img src="{{ asset('storage/' . $antique->image) }}" alt="{{ $antique->name }}">
+                        </div>
+                    @endif
+                    <h1 class="antique-enchere-nom">{{ $antique->name }} </h1>
+                    <h3 class="antique-enchere-desc">{{ $antique->description }} </h3>
+                    <strong>Crée le: {{ $antique->created_at }} </strong>
 
-                @if ($antique->image)
-                    <div class="image">
-                        <img src="{{ asset('storage/' . $antique->image) }}" alt="{{ $antique->name }}">
-                    </div>
-                @endif
-                <strong>Crée le: {{ $antique->created_at }} </strong>
-                <p class="lead">{{ $antique->description }}</p>
+                </header>
+                <p class="antique-enchere-prix">Avec comme minimum : {{ $antique->price }} $</p>
 
-                <div class="buttons">
+                <div class="antique-enchere-options">
                     <a href="{{ url('antiques/' . $antique->id . '/edit') }}" class="btn btn-info">Modifier</a>
                     <a href="{{ url('/') }}" class="btn btn-info">Retour à la page d'accueil</a>
                     <form action="{{ url('antiques/' . $antique->id) }}" method="POST" style="display: inline">
@@ -27,25 +30,44 @@
                 </div>
             </div>
         </div>
+        <div class="offres">
+            <h2>Les offres:</h2>
+        </div>
+        <table class="offer-table">
+            <tr>
+                <th>Numero</th>
+                <th>Crée le</th>
+                <th>Prix</th>
+                <th>Action</th>
+            </tr>
+        @foreach ($antique->offers as $offer)
+            <tr>
+                <td>#{{$offer->id}}</td>
+                <td>{{$offer->created_at}}</td>
+                <td>{{$offer->price}}$</td>
+                <td>
+                    <form action="{{ url('offre/' . $offer->id) }}" method="POST" style="display: inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {{-- <div class="container-offres-enchere">
+                <span>#{{$offer->id}}</span>
+                <span>{{$offer->created_at}}</span>
+                <span>{{$offer->price}}$</span>
+                <form action="{{ url('offre/' . $offer->id) }}" method="POST" style="display: inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+            </div> --}}
+        @endforeach
+        </table>
 
-        <div class="container">
-            <h2> Les offres:</h2>
-            @foreach ($antique->offers as $offre)
-                <strong> offre numéro {{$offre->id}} rédigé par:moi le {{ $offre->created_at }}
-                </strong>
-                <h3>{{ $offre->created_at }}</h2>
-                    <p class="lead">{{ $offre->price }}</p>
-                    <div class="buttons">
-                        <form action="{{ url('offre/' . $offre->id) }}" method="POST" style="display: inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
-                        </form>
-                    </div>
-            @endforeach
-
-                <h4> Ajouter une offre:</h4>
-                <div class="form-group mb-4">
+        <h4>Ajouter une offre:</h4>
+        <div class="form-group mb-4">
 
                     @if ($message = Session::get('warning'))
 
@@ -59,17 +81,18 @@
                         enctype="multipart/form-data"> --}}
                         <form action="{{route('offers.store')}}" method="POST" enctype="multipart/form-data">
 
-                            <div class="form-group mb-3">
+                        <div class="form-group mb-3">
 
-                                <label for="content">Ajouter votre offres:</label>
-                                <input type="number" name="price" id="price" />
-                                <input type="hidden" name="user_id" value=1 /><br />
+                            <label for="content">Ajouter votre offres:</label>
+                            <input type="number" name="price" id="price" />
+                            <input type="hidden" name="user_id" value=1 /><br />
 
-                                <input type="hidden" name="antique_id" value="{{ $antique->id}}" /><br />
-                                {{-- <input type="hidden" value="{{ $antique->id}}">{{ $antique->id }}/><br /> --}}
-                            </div>
+                            <input type="hidden" name="antique_id" value="{{ $antique->id}}" /><br />
+                        </div>
 
-                            <button type="submit" class="btn btn-primary">Publier</button>
-                        </form>
-                </div>
+                        <button type="submit" class="btn btn-primary">Publier</button>
+                    </form>
+        </div>
+    </div>
+
 @endsection

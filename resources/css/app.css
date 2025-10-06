@@ -19,6 +19,15 @@ body a {
     margin: 8px;
     position: relative;
 }
+#antique-search-container {
+    margin: 8px;
+    position: relative;
+}
+.antique-searchbar {
+    font-weight: bold;
+    font-size: 16px;
+}
+
 #headerSite {
     background-color: #2e1d19;
     left: 0px;
@@ -103,12 +112,42 @@ body a {
 }
 
 .antique-enchere {
+    padding-bottom: 10px;
     border-bottom: 2px solid #725042;
+}
+.antique-enchere-options {
+    display: flex;
+    flex-direction: row;
+}
+.antique-enchere-options * {
+    padding-right: 20px;
+    text-decoration: underline;
+    font-weight: bold;
 }
 
 .container-offres-enchere {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+}
+.offer-table {
+    border-collapse: collapse;
+    font-size: 18px;
+}
+
+.offer-table th {
+    text-align: left;
+}
+
+.offer-table th,td {
+    padding-right: 40px;
+}
+
+.offer-table tr:nth-child(odd) {
+    background-color: #edc58a;
+}
+
+.container-offres-enchere * {
+    padding-right: 20px;
 }
 
 .container-offres-enchere:nth-child(even) {

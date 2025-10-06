@@ -26,10 +26,10 @@
             <p id="descSite">Bienvenue au enchère d'objets antiques</p>
         </header>
 
-        <div class="car-body">
+        <div id="antique-search-container">
             <form method="GET" action="{{ url('/') }}">
                 <div class="form-group">
-                    <input type="text" name="search" class="typeahead form-control" id="antique_search"
+                    <input type="text" name="search" class="antique-searchbar typeahead form-control" id="antique_search"
                         placeholder="Rechercher..." value="{{ request('search') }}">
                 </div>
             </form>
