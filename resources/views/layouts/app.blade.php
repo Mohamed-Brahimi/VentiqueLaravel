@@ -1,51 +1,46 @@
+@php $locale = session()->get('locale'); @endphp
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/src/style.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- jQuery and jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/ui-lightness/jquery-ui.css">
+
+    <!-- Your styles -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
     <div id="global">
         <header id="headerSite">
-            <a href="">
+            <a href="{{ url('/') }}">
                 <h1 id="titreSite">Ventique</h1>
             </a>
             <p id="descSite">Bienvenue au enchère d'objets antiques</p>
-            <?php if (isset($_SESSION['utilisateur'])): ?>
-            <a href="AdminOffres/index">
-                <h4>Afficher toutes les offres de tous les articles</h4>
-            </a>
-            <?php endif; ?>
-            <div id="connexion">
-                <?php if (isset($_SESSION['utilisateur'])): ?>
-                <a href="Utilisateurs/deconnecter">
-                    <h3>Bonjour <?= $_SESSION['utilisateur']['nom'] ?>,
-                        <small>Se déconnecter</small>
-                </a>
-                </h3>
-                <?php else: ?>
-                <a href="Utilisateurs/index">
-                    <h3>Se connecter<small></small></h3>
-                    <?php endif; ?>
-            </div>
         </header>
+
         <div class="car-body">
-            <form>
-                @csrf
+            <form method="GET" action="{{ url('/') }}">
                 <div class="form-group">
-                    <input type="text" class="typeahead form-control" id="article_search" placeholder="Rechercher...">
+                    <input type="text" name="search" class="typeahead form-control" id="antique_search"
+                        placeholder="Rechercher..." value="{{ request('search') }}">
                 </div>
             </form>
+
             <script type="text/javascript">
                 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                $(document).ready(function () {
+                $(function () {
                     $('#antique_search').autocomplete({
                         source: function (request, response) {
                             $.ajax({
-                                url: "{{route('autocomplete')}}",
+                                url: "{{ route('autocomplete') }}",
                                 type: 'POST',
                                 dataType: "json",
                                 data: {
@@ -54,36 +49,40 @@
                                 },
                                 success: function (data) {
                                     response(data);
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error('Autocomplete error:', status, error, xhr.responseText);
+                                    response([]);
                                 }
                             });
                         },
                         select: function (event, ui) {
-                            $('#antique_search').val(ui.item.label);
-
+                            // put label in input and submit the GET form so index is filtered
+                            if (ui.item && ui.item.label) {
+                                $('#antique_search').val(ui.item.label);
+                                $('#antique_search').closest('form').submit();
+                            }
                             return false;
-                        }
+                        },
+                        minLength: 2
                     });
                 });
             </script>
         </div>
+
         <div id="contenu">
             @yield('content')
         </div>
+
         <div id="filler"></div>
+
         <footer id="footer">
             <p>Ventique &copy; 2025</p>
-            <a style="color: rgb(236, 203, 159);" href="Apropos/index">
+            <a style="color: rgb(236, 203, 159);" href="{{ url('/apropos') }}">
                 <p>À propos</p>
             </a>
         </footer>
     </div>
-    <!-- <div class="bg-blue-200 flex w-max h-2.5">
-        <h2 class="">Ventique</h2>
-    </div>
-    <button class="bg-sky-500/100 ">Temp</button>
-    <div class="background">
-        @yield('content')
-    </div> -->
 </body>
 
 </html>

@@ -10,10 +10,22 @@ class AntiqueController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $antiques = Antique::all();
-        return view(view: 'antiques.index', data: compact(var_name: 'antiques'));
+        $search = trim((string) $request->input('search', ''));
+
+        $query = Antique::query();
+
+        if ($search !== '') {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('description', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $antiques = $query->orderBy('created_at', 'desc')->get();
+
+        return view('antiques.index', compact('antiques', 'search'));
     }
 
     /**
@@ -99,17 +111,24 @@ class AntiqueController extends Controller
     }
     public function autocomplete(Request $request)
     {
-        $search = $request->search;
-        $antiques = Antique::orderBy('name', 'ASC')
-            ->where('name', 'LIKE', "%$search%")
-            ->get();
-        $response = array();
-        foreach ($antiques as $antique) {
-            $response[] = array(
-                'value' => $antique->id,
-                'label' => $antique->name
-            );
+        $search = $request->input('search', '');
+        if (trim($search) === '') {
+            return response()->json([]);
         }
+
+        $antiques = Antique::orderBy('name', 'ASC')
+            ->select('id', 'name')
+            ->where('name', 'LIKE', '%' . $search . '%')
+            ->limit(10)
+            ->get();
+
+        $response = $antiques->map(function ($antique) {
+            return [
+                'value' => $antique->id,
+                'label' => $antique->name,
+            ];
+        })->toArray();
+
         return response()->json($response);
     }
 }
