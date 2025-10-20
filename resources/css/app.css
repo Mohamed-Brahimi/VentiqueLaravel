@@ -92,6 +92,7 @@ body a {
     border-radius: 10px;
     padding: 1px 14px;
     margin: 10px;
+    box-shadow: #7250424b 4px 4px 4px;
 }
 .antique-header * {
     margin: 8px;
@@ -138,7 +139,8 @@ body a {
     text-align: left;
 }
 
-.offer-table th,td {
+.offer-table th,
+td {
     padding-right: 40px;
 }
 

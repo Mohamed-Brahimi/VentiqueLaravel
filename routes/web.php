@@ -4,6 +4,7 @@ use App\Http\Controllers\AntiqueController;
 use App\Http\Controllers\OfferController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/', [AntiqueController::class, 'index']);
 
@@ -26,3 +27,7 @@ Route::resources([
 
 
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

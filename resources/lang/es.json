@@ -1,0 +1,18 @@
+{
+    "header_desc": "Bienvenido a nuestro sitio web",
+    "header_afficher_tous_offres": "Mostrar todas las ofertas para todos los artículos",
+    "header_message_connecte": "Buen día",
+    "header_message_connecte2": ", desconectar?",
+
+    "index_bouton_ajouter": "Añadir una antigüedad",
+
+    "footer_apropos": "Acerca de",
+    "apropos_texte": "Esta página contendrá detalles sobre nuestro sitio.",
+
+    "antique_offertpar": "Ofrecido por",
+    "antique_prix_min": "Con un mínimo de: ",
+    "antique_offres": "Ofertas ",
+    "antique_ajouterOffre": "Añadir una oferta",
+    "antique_prixPropose": "Precio ofrecido:",
+    "antique_boutonProposer": "Proponer"
+}

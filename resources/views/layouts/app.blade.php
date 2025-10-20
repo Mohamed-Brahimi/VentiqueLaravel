@@ -23,14 +23,21 @@
             <a href="{{ url('/') }}">
                 <h1 id="titreSite">Ventique</h1>
             </a>
+            
             <p id="descSite">Bienvenue au enchère d'objets antiques</p>
         </header>
-
+                        @if (Auth::user())
+                            @if (Auth::user()->role === 'USER')
+                                <a class="navbar-brand" href="{{ url('/') }}">
+                                    {{ config('app.name') }}
+                                </a>
+                            @endif
+                        @endif
         <div id="antique-search-container">
             <form method="GET" action="{{ url('/') }}">
                 <div class="form-group">
-                    <input type="text" name="search" class="antique-searchbar typeahead form-control" id="antique_search"
-                        placeholder="Rechercher..." value="{{ request('search') }}">
+                    <input type="text" name="search" class="antique-searchbar typeahead form-control"
+                        id="antique_search" placeholder="Rechercher..." value="{{ request('search') }}">
                 </div>
             </form>
 
@@ -67,9 +74,69 @@
                         minLength: 2
                     });
                 });
+                
+                @php $locale = session()->get('locale'); @endphp
+                <div class="nav-item dropdown">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        @switch($locale)
+                            @case('en')
+                                English
+                                @break
+                            @case('fr')
+                                Français
+                                @break
+                            @case('es')
+                                Español
+                                @break
+                            @default
+                            English
+                        @endswitch
+                        <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="lang/en">English</a>
+                        <a class="dropdown-item" href="lang/fr">Français</a>
+                        <a class="dropdown-item" href="lang/es">Español</a>
+                    </div>
+                </div>
+
             </script>
         </div>
+        <ul class="navbar-nav ms-auto">
+                    <!-- Authentication Links -->
 
+            @if (Auth::user()) {{-- accées au boutons d"enregistrement de connéction et de déconnexion peu importe le rôle de l'utilisateur authentifié --}}
+                @if (Auth::user()->role === 'ADMIN')
+                    {{-- Accées à l'espace admin Juste pour les ADMIN --}}
+                            <li class="nav-item">
+                                <a class="nav-link" href ="{{ route('articles.index') }}"> Espace Admin</a>
+                            </li>
+                        @endif
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }}
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                          document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
+                    @else
+                        <a class="nav-link" href="{{ route('login') }}">{{ __('Connexion') }}</a>
+                        <a class="nav-link" href="{{ route('register') }}">{{ __('Inscription') }}</a>
+
+                    @endif
+                </ul>
         <div id="contenu">
             @yield('content')
         </div>
