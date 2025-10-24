@@ -22,11 +22,13 @@
                 <div class="antique-enchere-options">
                     <a href="{{ url('antiques/' . $antique->id . '/edit') }}" class="btn btn-info">Modifier</a>
                     <a href="{{ url('/') }}" class="btn btn-info">Retour à la page d'accueil</a>
-                    <form action="{{ url('antiques/' . $antique->id) }}" method="POST" style="display: inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Supprimer</button>
-                    </form>
+                    @if(Auth::check() && (Auth::user()->id == $antique->user_id || Auth::user()->is_admin))
+                        <form action="{{ url('antiques/' . $antique->id) }}" method="POST" style="display: inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>
@@ -40,58 +42,59 @@
                 <th>Prix</th>
                 <th>Action</th>
             </tr>
-        @foreach ($antique->offers as $offer)
-            <tr>
-                <td>#{{$offer->id}}</td>
-                <td>{{$offer->created_at}}</td>
-                <td>{{$offer->price}}$</td>
-                <td>
-                    <form action="{{ url('offre/' . $offer->id) }}" method="POST" style="display: inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Supprimer</button>
-                    </form>
-                </td>
-            </tr>
-            {{-- <div class="container-offres-enchere">
-                <span>#{{$offer->id}}</span>
-                <span>{{$offer->created_at}}</span>
-                <span>{{$offer->price}}$</span>
-                <form action="{{ url('offre/' . $offer->id) }}" method="POST" style="display: inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Supprimer</button>
-                </form>
-            </div> --}}
-        @endforeach
+            @foreach ($antique->offers as $offer)
+                <tr>
+                    <td>#{{$offer->id}}</td>
+                    <td>{{$offer->created_at}}</td>
+                    <td>{{$offer->price}}$</td>
+                    <td>
+                        @if(Auth::check() && (Auth::user()->id == $offer->user_id || Auth::user()->is_admin))
+                            <form action="{{ route('offers.destroy', $offer->id) }}" method="POST" style="display: inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                        @endif
+                    </td>
+                </tr>
+
+            @endforeach
         </table>
 
         <h4>Ajouter une offre:</h4>
         <div class="form-group mb-4">
 
-                    @if ($message = Session::get('warning'))
+            @if ($message = Session::get('warning'))
 
-                        <div class="alert alert-warning">
-                            <p>{{ $message }}</p>
-                        </div>
+                <div class="alert alert-warning">
+                    <p>{{ $message }}</p>
+                </div>
 
+            @endif
+
+            @if ($message = Session::get('success'))
+
+                <div class="alert alert-success">
+                    <p>{{ $message }}</p>
+                </div>
+
+            @endif
+
+            <form action="{{route('offers.store')}}" method="POST">
+                @csrf
+
+                <div class="form-group mb-3">
+
+                    <label for="price">Ajouter votre offre:</label>
+                    <input type="number" name="price" id="price" step="0.01" min="0" required />
+                    @if(Auth::check())
+                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />
                     @endif
+                    <input type="hidden" name="antique_id" value="{{ $antique->id}}" />
+                </div>
 
-                    {{-- <form action="{{ url(url('antiques/'. $antique->id). '/offers') }}" method="POST"
-                        enctype="multipart/form-data"> --}}
-                        <form action="{{route('offers.store')}}" method="POST" enctype="multipart/form-data">
-
-                        <div class="form-group mb-3">
-
-                            <label for="content">Ajouter votre offres:</label>
-                            <input type="number" name="price" id="price" />
-                            <input type="hidden" name="user_id" value=1 /><br />
-
-                            <input type="hidden" name="antique_id" value="{{ $antique->id}}" /><br />
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Publier</button>
-                    </form>
+                <button type="submit" class="btn btn-primary">Publier</button>
+            </form>
         </div>
     </div>
 

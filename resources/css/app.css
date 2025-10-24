@@ -32,31 +32,176 @@ body a {
     background-color: #2e1d19;
     left: 0px;
     color: rgb(236, 203, 159);
-    padding-left: 8px;
-    padding-top: 1px;
+    padding: 20px;
     display: flex;
-    flex-direction: row;
+    flex-direction: row; /* Changed from column to row */
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-top {
+    text-align: left; /* Changed from center to left */
+    margin-bottom: 0; /* Removed bottom margin */
+    flex: 1; /* Allow it to grow */
+}
+
+.header-nav {
+    display: flex;
+    justify-content: flex-end; /* Align to the right */
+    align-items: center;
+    flex-wrap: nowrap; /* Prevent wrapping */
+    gap: 20px;
+    flex: 2; /* Give more space to navigation */
+}
+
+#antique-search-container {
+    flex: 1;
+    max-width: 300px; /* Reduced width for single line layout */
+    margin: 0;
+}
+
+.antique-searchbar {
+    width: 100%;
+    padding: 8px 12px; /* Reduced padding for compact look */
+    border: 2px solid #edc58a;
+    border-radius: 25px;
+    font-size: 14px; /* Slightly smaller font */
+    background-color: #f9e0bb;
+    color: #2e1d19;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.antique-searchbar:focus {
+    border-color: #725042;
+    box-shadow: 0 0 0 3px rgba(237, 197, 138, 0.3);
+}
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 10px; /* Reduced gap for compact layout */
     align-items: center;
 }
 
-#titreSite {
-    border-right: solid 2px rgb(177, 137, 84);
-    padding-right: 10px;
+.nav-item {
+    display: inline-block;
 }
 
-#headerSite * {
-    margin: 4px;
-    margin-right: 4px;
-}
-#headerSite a {
-    color: #f9e0bb;
+.nav-link {
+    color: rgb(236, 203, 159) !important;
     text-decoration: none;
-    font-weight: bold;
+    padding: 6px 12px; /* Reduced padding */
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 14px; /* Smaller font for compact look */
+    transition: all 0.3s ease;
 }
-#headerSite a:active {
-    color: #f0c38a;
+
+.nav-link:hover {
+    background-color: rgba(237, 197, 138, 0.2);
+    color: #edc58a !important;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #f9e0bb;
+    border: 2px solid #edc58a;
+    border-radius: 8px;
+    min-width: 180px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 10px 15px;
+    color: #2e1d19 !important;
     text-decoration: none;
+    border-bottom: 1px solid #edc58a;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background-color: #edc58a;
+}
+
+.dropdown-toggle::after {
+    content: " ▼";
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+#titreSite {
+    font-size: 2rem; /* Reduced from 2.5rem */
+    margin: 0;
     font-weight: bold;
+    color: #edc58a;
+}
+
+#descSite {
+    margin: 2px 0 0 0; /* Reduced margin */
+    font-style: italic;
+    color: rgb(236, 203, 159);
+    font-size: 0.9rem; /* Reduced from 1.1rem */
+}
+
+/* Responsive design - stack vertically on smaller screens */
+@media (max-width: 992px) {
+    #headerSite {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .header-top {
+        text-align: center;
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    .header-nav {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+    }
+
+    #antique-search-container {
+        order: 1;
+        width: 100%;
+        max-width: none;
+    }
+
+    .navbar-nav {
+        order: 2;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .dropdown {
+        order: 3;
+    }
+
+    #titreSite {
+        font-size: 1.8rem;
+    }
 }
 
 #linkAjouterAntique {
@@ -224,4 +369,29 @@ td {
     flex-direction: column;
     flex-grow: 1;
     min-height: 100vh;
+}
+
+.header-top {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.header-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1rem;
+}
+
+.nav-item {
+    display: inline-block;
 }

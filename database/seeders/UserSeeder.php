@@ -17,8 +17,10 @@ class UserSeeder extends Seeder
         for ($i = 0; $i < 10; $i++) {
             $user = new User;
             $user->name = $faker->lastName;
+
             $user->email = $faker->unique()->email();
             $user->password = bcrypt('123456');
+            $user->role = 'user';
             $user->save();
 
         }

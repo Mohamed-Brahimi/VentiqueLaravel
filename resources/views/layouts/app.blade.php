@@ -20,110 +20,42 @@
 <body>
     <div id="global">
         <header id="headerSite">
-            <a href="{{ url('/') }}">
-                <h1 id="titreSite">Ventique</h1>
-            </a>
-            
-            <p id="descSite">Bienvenue au enchère d'objets antiques</p>
-        </header>
-                        @if (Auth::user())
-                            @if (Auth::user()->role === 'USER')
-                                <a class="navbar-brand" href="{{ url('/') }}">
-                                    {{ config('app.name') }}
-                                </a>
-                            @endif
-                        @endif
-        <div id="antique-search-container">
-            <form method="GET" action="{{ url('/') }}">
-                <div class="form-group">
-                    <input type="text" name="search" class="antique-searchbar typeahead form-control"
-                        id="antique_search" placeholder="Rechercher..." value="{{ request('search') }}">
-                </div>
-            </form>
+            <div class="header-top">
+                <a href="{{ url('/') }}">
+                    <h1 id="titreSite">Ventique</h1>
+                </a>
+                <p id="descSite">Bienvenue aux enchères d'objets antiques</p>
+            </div>
 
-            <script type="text/javascript">
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                $(function () {
-                    $('#antique_search').autocomplete({
-                        source: function (request, response) {
-                            $.ajax({
-                                url: "{{ route('autocomplete') }}",
-                                type: 'POST',
-                                dataType: "json",
-                                data: {
-                                    _token: CSRF_TOKEN,
-                                    search: request.term
-                                },
-                                success: function (data) {
-                                    response(data);
-                                },
-                                error: function (xhr, status, error) {
-                                    console.error('Autocomplete error:', status, error, xhr.responseText);
-                                    response([]);
-                                }
-                            });
-                        },
-                        select: function (event, ui) {
-                            // put label in input and submit the GET form so index is filtered
-                            if (ui.item && ui.item.label) {
-                                $('#antique_search').val(ui.item.label);
-                                $('#antique_search').closest('form').submit();
-                            }
-                            return false;
-                        },
-                        minLength: 2
-                    });
-                });
-                
-                @php $locale = session()->get('locale'); @endphp
-                <div class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        @switch($locale)
-                            @case('en')
-                                English
-                                @break
-                            @case('fr')
-                                Français
-                                @break
-                            @case('es')
-                                Español
-                                @break
-                            @default
-                            English
-                        @endswitch
-                        <span class="caret"></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="lang/en">English</a>
-                        <a class="dropdown-item" href="lang/fr">Français</a>
-                        <a class="dropdown-item" href="lang/es">Español</a>
-                    </div>
+            <nav class="header-nav">
+                <!-- Search Bar -->
+                <div id="antique-search-container">
+                    <form method="GET" action="{{ url('/') }}">
+                        <div class="form-group">
+                            <input type="text" name="search" class="antique-searchbar typeahead form-control"
+                                id="antique_search" placeholder="Rechercher des antiques..." value="{{ request('search') }}">
+                        </div>
+                    </form>
                 </div>
 
-            </script>
-        </div>
-        <ul class="navbar-nav ms-auto">
-                    <!-- Authentication Links -->
-
-            @if (Auth::user()) {{-- accées au boutons d"enregistrement de connéction et de déconnexion peu importe le rôle de l'utilisateur authentifié --}}
-                @if (Auth::user()->role === 'ADMIN')
-                    {{-- Accées à l'espace admin Juste pour les ADMIN --}}
+                <!-- Authentication Links -->
+                <ul class="navbar-nav">
+                    @if (Auth::user())
+                        @if (Auth::user()->role === 'ADMIN')
                             <li class="nav-item">
-                                <a class="nav-link" href ="{{ route('articles.index') }}"> Espace Admin</a>
+                                <a class="nav-link" href="{{ route('articles.index') }}">Espace Admin</a>
                             </li>
                         @endif
+                        
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button">
                                 {{ Auth::user()->name }}
                             </a>
 
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                          document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    {{ __('Déconnexion') }}
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -132,11 +64,75 @@
                             </div>
                         </li>
                     @else
-                        <a class="nav-link" href="{{ route('login') }}">{{ __('Connexion') }}</a>
-                        <a class="nav-link" href="{{ route('register') }}">{{ __('Inscription') }}</a>
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Connexion') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('Inscription') }}</a>
+                        </li>
                     @endif
                 </ul>
+
+                <!-- Language Dropdown -->
+                <div class="nav-item dropdown">
+                    <a id="languageDropdown" class="nav-link dropdown-toggle" href="#" role="button">
+                        @switch($locale)
+                            @case('en')
+                                🇺🇸 English
+                                @break
+                            @case('fr')
+                                🇫🇷 Français
+                                @break
+                            @case('es')
+                                🇪🇸 Español
+                                @break
+                            @default
+                                🇺🇸 English
+                        @endswitch
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                        <a class="dropdown-item" href="{{ url('lang/en') }}">🇺🇸 English</a>
+                        <a class="dropdown-item" href="{{ url('lang/fr') }}">🇫🇷 Français</a>
+                        <a class="dropdown-item" href="{{ url('lang/es') }}">🇪🇸 Español</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <script type="text/javascript">
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            $(function () {
+                $('#antique_search').autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "{{ route('autocomplete') }}",
+                            type: 'POST',
+                            dataType: "json",
+                            data: {
+                                _token: CSRF_TOKEN,
+                                search: request.term
+                            },
+                            success: function (data) {
+                                response(data);
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Autocomplete error:', status, error, xhr.responseText);
+                                response([]);
+                            }
+                        });
+                    },
+                    select: function (event, ui) {
+                        if (ui.item && ui.item.label) {
+                            $('#antique_search').val(ui.item.label);
+                            $('#antique_search').closest('form').submit();
+                        }
+                        return false;
+                    },
+                    minLength: 2
+                });
+            });
+        </script>
+
         <div id="contenu">
             @yield('content')
         </div>
