@@ -41,7 +41,7 @@
             <input type="file" name="image" id="image" accept="image/*">
             <!-- <input type="hidden" name="user_id" value="<?= 1?>" /><br /> -->
         </div>
-        <input type="hidden" name="user_id" value="<?= 1?>" /><br />
+        <input type="hidden" name="user_id" value="<?= auth()->id() ?>" /><br />
         <button type="submit" class="btn btn-primary">Publier</button> <a href="{{ url('/') }}" class="btn btn-info">Retour
             à la page d'accueil</a>
 

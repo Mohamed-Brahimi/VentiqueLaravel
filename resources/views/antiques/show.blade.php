@@ -7,12 +7,13 @@
         <div class="row">
             <div class="antique-enchere">
                 <header>
+                                        <h1 class="antique-enchere-nom">{{ $antique->name }} </h1>
+
                     @if ($antique->image)
                         <div class="image">
                             <img src="{{ asset('storage/' . $antique->image) }}" alt="{{ $antique->name }}">
                         </div>
                     @endif
-                    <h1 class="antique-enchere-nom">{{ $antique->name }} </h1>
                     <h3 class="antique-enchere-desc">{{ $antique->description }} </h3>
                     <strong>Crée le: {{ $antique->created_at }} </strong>
 
@@ -20,9 +21,10 @@
                 <p class="antique-enchere-prix">Avec comme minimum : {{ $antique->price }} $</p>
 
                 <div class="antique-enchere-options">
-                    <a href="{{ url('antiques/' . $antique->id . '/edit') }}" class="btn btn-info">Modifier</a>
-                    <a href="{{ url('/') }}" class="btn btn-info">Retour à la page d'accueil</a>
                     @if(Auth::check() && (Auth::user()->id == $antique->user_id || Auth::user()->is_admin))
+
+                        <a href="{{ url('antiques/' . $antique->id . '/edit') }}" class="btn btn-info">Modifier</a>
+                        <a href="{{ url('/') }}" class="btn btn-info">Retour à la page d'accueil</a>
                         <form action="{{ url('antiques/' . $antique->id) }}" method="POST" style="display: inline">
                             @csrf
                             @method('DELETE')
@@ -79,22 +81,23 @@
                 </div>
 
             @endif
+            @if(Auth::check())
 
-            <form action="{{route('offers.store')}}" method="POST">
-                @csrf
+                <form action="{{route('offers.store')}}" method="POST">
+                    @csrf
 
-                <div class="form-group mb-3">
+                    <div class="form-group mb-3">
 
-                    <label for="price">Ajouter votre offre:</label>
-                    <input type="number" name="price" id="price" step="0.01" min="0" required />
-                    @if(Auth::check())
+                        <label for="price">Ajouter votre offre:</label>
+                        <input type="number" name="price" id="price" step="0.01" min="0" required />
                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />
-                    @endif
-                    <input type="hidden" name="antique_id" value="{{ $antique->id}}" />
-                </div>
+                        <input type="hidden" name="antique_id" value="{{ $antique->id}}" />
+                    </div>
 
-                <button type="submit" class="btn btn-primary">Publier</button>
-            </form>
+                    <button type="submit" class="btn btn-primary">Publier</button>
+                </form>
+            @endif
+
         </div>
     </div>
 

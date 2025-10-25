@@ -4,30 +4,19 @@ use App\Http\Controllers\AntiqueController;
 use App\Http\Controllers\OfferController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+    Route::resources([
+        'antiques' => AntiqueController::class,
+        "offers" => OfferController::class
+    ]);
+});
+
+// Public routes
 Route::get('/', [AntiqueController::class, 'index']);
+Route::post('/autocomplete', [AntiqueController::class, 'autocomplete'])->name('autocomplete');
 
-Route::post(uri: '/autocomplete', action: [AntiqueController::class, 'autocomplete'])->name('autocomplete');
+Auth::routes(['verify' => true]); // Enable email verification routes
 
-Route::resources([
-    'antiques' => AntiqueController::class,
-    "offers" => OfferController::class
-]);
-// Route::get('/antiques', [AntiqueController::class, 'index']);
-// Route::prefix('antiques')->controller(AntiqueController::class)->group(function () {
-//     Route::get('/', 'index');
-//     Route::get('create', 'create');
-//     Route::get('{id}', 'show');
-
-//     Route::post('store', 'store');
-//     Route::patch('{id}', 'update');
-//     Route::delete('{id}', 'destroy');
-// });
-
-
-
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('lang/{locale}', [App\Http\Controllers\LocalizationController::class, 'index']);
