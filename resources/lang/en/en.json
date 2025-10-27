@@ -4,7 +4,7 @@
     "header_desc": "Welcome to our website",
     "header_afficher_tous_offres": "Show all offers for all items",
     "header_message_connecte": "Hello",
-    "header_message_connecte2": ", log out",
+    "header_message_connecte2": ", log out?",
 
     "Connexion": "Login",
     "Inscription": "Register",
@@ -14,10 +14,17 @@
     "index_recherche_placeholder": "Search an antique",
 
     "footer_apropos": "About",
-    "apropos_texte": "This page will contain details about our website.",
+    "apropos_texte": "This page will contain details about our site.",
     "apropos_texte_image": "Upload an image",
 
-    "antique_ajouter_article": "Add an item",
+    "apropos_noms": "Developers: Mohamed Arezki Brahimi, Adam Mahmoudi",
+    "apropos_cours1": "420-5H6 MO Transactional Web Applications.",
+    "apropos_cours2": "Fall 2025, Collège Montmorency.",
+    "apropos_interactions1": "Log in or register on the site",
+    "apropos_interactions2": "Add, edit, or delete an antique",
+    "apropos_interactions3": "Make offers on antiques",
+
+    "antique_ajouter_article": "Add an article",
 
     "antique_nom": "Name: ",
     "antique_desc": "Description: ",
