@@ -7,8 +7,8 @@
 
     <div class="container">
         <div class="row">
-            <p> <B>Cette page va contenir des détails sur notre site.</B></p>
-            <h2> Téléversser une image </h2>
+            <p> <B>@lang("apropos_texte")</B></p>
+            <h2> @lang("apropos_texte_image")</h2>
 
 
         </div>

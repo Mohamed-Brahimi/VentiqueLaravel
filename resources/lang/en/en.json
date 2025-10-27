@@ -1,0 +1,71 @@
+{
+    "You are logged in!": "You are logged in!",
+
+    "header_desc": "Welcome to our website",
+    "header_afficher_tous_offres": "Show all offers for all items",
+    "header_message_connecte": "Hello",
+    "header_message_connecte2": ", log out",
+
+    "Connexion": "Login",
+    "Inscription": "Register",
+    "Déconnexion": "Logout",
+
+    "index_bouton_ajouter": "Add an antique",
+    "index_recherche_placeholder": "Search an antique",
+
+    "footer_apropos": "About",
+    "apropos_texte": "This page will contain details about our website.",
+    "apropos_texte_image": "Upload an image",
+
+    "antique_ajouter_article": "Add an item",
+
+    "antique_nom": "Name: ",
+    "antique_desc": "Description: ",
+    "antique_prix": "Price: ",
+    "antique_image": "Image: ",
+    "antique_publier": "Publish ",
+    "antique_retour": "Back to the homepage ",
+
+    "antique_ajouter": "Add an antique",
+    "antique_modifier": "Edit the antique: ",
+    "antique_ajouter_desc": "Add a description",
+    "antique_entrer_prix_min": "Enter your minimum price",
+    "antique_enregistrer": "Save",
+    "antique_annuler": "Cancel",
+
+    "antique_liste_antiques": "List of antiques",
+    "antique_cree_le": "Created on: ",
+
+    "modifier": "Edit",
+    "supprimer": "Delete",
+
+    "antique_offertpar": "Offered by",
+    "antique_prix_min": "With minimum: ",
+    "antique_offres": "Offers: ",
+    "antique_ajouterOffre": "Add an offer",
+    "antique_prixPropose": "Proposed price: ",
+    "antique_boutonProposer": "Propose",
+
+    "offre_les_offres": "The offers: ",
+    "offre_table_numero": "Number",
+    "offre_table_creele": "Created on",
+    "offre_table_prix": "Price",
+    "offre_table_action": "Action",
+
+    "offre_ajouter1": "Add an offer: ",
+    "offre_ajouter2": "Add your offer: ",
+    "Please confirm your password before continuing.": "Please confirm your password before continuing.",
+    "Password": "Password",
+    "Confirm Password": "Confirm Password",
+    "Forgot your Password": "Forgot your password?",
+    "Reset Password": "Reset Password",
+    "Email Address": "Email Address",
+    "Send Password Reset Link": "Send Password Reset Link",
+    "Login": "Login",
+    "Register": "Register",
+    "Remember Me": "Remember Me",
+    "A fresh verification link has been sent to your email address.": "A fresh verification link has been sent to your email address.",
+    "Before proceeding, please check your email for a verification link.": "Before proceeding, please check your email for a verification link.",
+    "If you did not receive the email": "If you did not receive the email",
+    "click here to request another": "click here to request another"
+}

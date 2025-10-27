@@ -4,10 +4,10 @@
 @section('content')
 
 
-    <h1>Modifier l'antique: {{ $antique->name }}</h1>
+    <h1>@lang("antique_modifier") {{ $antique->name }}</h1>
 
 
-    <h1>Ajouter un antique</h1>
+    <h1>@lang("antique_ajouter")</h1>
     @if ($message = Session::get('warning'))
 
         <div class="alert alert-warning">
@@ -23,7 +23,7 @@
 
         <div class="form-group mb-3">
 
-            <label for="name">Nom:</label>
+            <label for="name">@lang("antique_nom")</label>
             <input type="text" class="form-control" id="name" placeholder="Entrer nom" name="name"
                 value="{{ $antique->name }}">
 
@@ -31,7 +31,7 @@
 
         <div class="form-group mb-3">
 
-            <label for="description">Ajouter la description:</label>
+            <label for="description">@lang("antique_ajouter_desc")</label>
             <textarea name="description" id="description" cols="30" rows="10"
                 class="form-control">{{ $antique->description }}</textarea>
 
@@ -39,21 +39,21 @@
 
         <div class="form-group mb-3">
 
-            <label for="price">Entrer votre prix minimum </label>
+            <label for="price">@lang("antique_entrer_prix_min")</label>
             <input type="number" class="form-control" id="price" min=1 name="price" value="{{ $antique->price }}">
 
         </div>
 
         <div class="form-group mb-3">
 
-            <label for="image">Image:</label>
+            <label for="image">@lang("antique_image")</label>
             <input type="text" class="form-control" id="image" placeholder="Entrer URL image" name="image"
                 value="{{ $antique->image }}">
 
         </div>
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <button type="submit" class="btn btn-primary">@lang("antique_enregistrer")</button>
 
-        <a href="{{ url('antiques/' . $antique->id) }}" class="btn btn-info">Annuler</a>
+        <a href="{{ url('antiques/' . $antique->id) }}" class="btn btn-info">@lang("antique_annuler")</a>
     </form>
 
 

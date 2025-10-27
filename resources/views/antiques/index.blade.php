@@ -5,12 +5,12 @@
     <div class="row">
 
         <div class="col-lg-10">
-            <h2>Liste des antiques</h2>
+            <h2>@lang("antique_liste_antiques")</h2>
         </div>
         @if(Auth::check())
 
             <div class="col-lg-2">
-                <a class="btn btn-success" href="{{ url('antiques/create') }}">Ajouter une antique</a>
+                <a class="btn btn-success" href="{{ url('antiques/create') }}">@lang("antique_ajouter")</a>
             </div>
         @endif
 

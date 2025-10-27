@@ -1,0 +1,71 @@
+{
+    "You are logged in!": "¡Has iniciado sesión!",
+
+    "header_desc": "Bienvenido a nuestro sitio web",
+    "header_afficher_tous_offres": "Mostrar todas las ofertas de todos los artículos",
+    "header_message_connecte": "Hola",
+    "header_message_connecte2": ", cerrar sesión",
+
+    "Connexion": "Iniciar sesión",
+    "Inscription": "Registrarse",
+    "Déconnexion": "Cerrar sesión",
+
+    "index_bouton_ajouter": "Agregar una antigüedad",
+    "index_recherche_placeholder": "Buscar una antigüedad",
+
+    "footer_apropos": "Acerca de",
+    "apropos_texte": "Esta página contendrá detalles sobre nuestro sitio web.",
+    "apropos_texte_image": "Subir una imagen",
+
+    "antique_ajouter_article": "Agregar un artículo",
+
+    "antique_nom": "Nombre: ",
+    "antique_desc": "Descripción: ",
+    "antique_prix": "Precio: ",
+    "antique_image": "Imagen: ",
+    "antique_publier": "Publicar ",
+    "antique_retour": "Volver a la página principal ",
+
+    "antique_ajouter": "Agregar una antigüedad",
+    "antique_modifier": "Editar la antigüedad: ",
+    "antique_ajouter_desc": "Agregar una descripción",
+    "antique_entrer_prix_min": "Ingrese su precio mínimo",
+    "antique_enregistrer": "Guardar",
+    "antique_annuler": "Cancelar",
+
+    "antique_liste_antiques": "Lista de antigüedades",
+    "antique_cree_le": "Creado el: ",
+
+    "modifier": "Editar",
+    "supprimer": "Eliminar",
+
+    "antique_offertpar": "Ofrecido por",
+    "antique_prix_min": "Con mínimo: ",
+    "antique_offres": "Ofertas: ",
+    "antique_ajouterOffre": "Agregar una oferta",
+    "antique_prixPropose": "Precio propuesto: ",
+    "antique_boutonProposer": "Proponer",
+
+    "offre_les_offres": "Las ofertas: ",
+    "offre_table_numero": "Número",
+    "offre_table_creele": "Creado el",
+    "offre_table_prix": "Precio",
+    "offre_table_action": "Acción",
+
+    "offre_ajouter1": "Agregar una oferta: ",
+    "offre_ajouter2": "Agregue su oferta: ",
+    "Please confirm your password before continuing.": "Por favor confirme su contraseña antes de continuar.",
+    "Password": "Contraseña",
+    "Confirm Password": "Confirmar contraseña",
+    "Forgot your Password": "¿Olvidó su contraseña?",
+    "Reset Password": "Restablecer contraseña",
+    "Email Address": "Dirección de correo electrónico",
+    "Send Password Reset Link": "Enviar enlace para restablecer la contraseña",
+    "Login": "Iniciar sesión",
+    "Register": "Registrarse",
+    "Remember Me": "Recuérdame",
+    "A fresh verification link has been sent to your email address.": "Se ha enviado un nuevo enlace de verificación a su dirección de correo electrónico.",
+    "Before proceeding, please check your email for a verification link.": "Antes de continuar, por favor revise su correo electrónico para ver si hay un enlace de verificación.",
+    "If you did not receive the email": "Si no recibió el correo electrónico",
+    "click here to request another": "haga clic aquí para solicitar otro"
+}

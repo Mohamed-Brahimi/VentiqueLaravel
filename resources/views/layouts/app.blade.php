@@ -24,7 +24,7 @@
                 <a href="{{ url('/') }}">
                     <h1 id="titreSite">Ventique</h1>
                 </a>
-                <p id="descSite">Bienvenue aux enchères d'objets antiques</p>
+                <p id="descSite">@lang("header_desc")</p>
             </div>
 
             <nav class="header-nav">
@@ -33,7 +33,7 @@
                     <form method="GET" action="{{ url('/') }}">
                         <div class="form-group">
                             <input type="text" name="search" class="antique-searchbar typeahead form-control"
-                                id="antique_search" placeholder="Rechercher des antiques..." value="{{ request('search') }}">
+                                id="antique_search" placeholder={{ __("index_recherche_placeholder") }} value="{{ request('search') }}">
                         </div>
                     </form>
                 </div>
@@ -142,7 +142,7 @@
         <footer id="footer">
             <p>Ventique &copy; 2025</p>
             <a style="color: rgb(236, 203, 159);" href="{{ url('/apropos') }}">
-                <p>À propos</p>
+                <p>@lang("footer_apropos")</p>
             </a>
         </footer>
     </div>
