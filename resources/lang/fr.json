@@ -2,64 +2,41 @@
     "You are logged in!": "Vous êtes connecté!",
 
     "header_desc": "Bienvenue sur notre site web",
-    "header_afficher_tous_offres": "Afficher toutes les offres de tous les articles",
-    "header_message_connecte": "Bonjour",
-    "header_message_connecte2": ", se déconnecter?",
-
+    "footer_apropos": "À propos",
     "Connexion": "Connexion",
     "Inscription": "Inscription",
     "Déconnexion": "Déconnexion",
+    "index_recherche_placeholder": "Rechercher une antiquité",
 
-    "index_bouton_ajouter": "Ajouter une antique",
-    "index_recherche_placeholder": "Rechercher une antique",
-
-    "footer_apropos": "A propos",
-    "apropos_texte": "Cette page va contenir des détails sur notre site.",
-
-    "apropos_texte_image": "Televerser une image",
-
-    "apropos_noms": " Développeurs: Mohamed Arezki Brahimi, Adam Mahmoudi",
-    "apropos_cours1": "420-5H6 MO Applications Web transactionnelles.",
-    "apropos_cours2": "Automne 2025, Collège Montmorency.",
-    "apropos_interactions1": "Vous connectez ou vous inscrire au site",
-    "apropos_interactions2": "Ajouter, modifier ou supprimer une antique",
-    "apropos_interactions3": "Faire des offres sur les antiques",
-
-    "antique_ajouter_article": "Ajouter un article",
-
+    "header_afficher_tous_offres": "Afficher toutes les offres de tous les articles",
+    "header_message_connecte": "Bonjour",
+    "header_message_connecte2": ", se déconnecter?",
+    "antique_ajouter": "Ajouter une antique",
     "antique_nom": "Nom: ",
     "antique_desc": "Description: ",
     "antique_prix": "Prix: ",
     "antique_image": "Image: ",
     "antique_publier": "Publier ",
     "antique_retour": "Retour à la page d'acceuil ",
-
-    "antique_ajouter": "Ajouter une antique",
-    "antique_modifier": "Modifier l'antique: ",
     "antique_ajouter_desc": "Ajouter une description",
     "antique_entrer_prix_min": "Entrer votre prix minimum",
     "antique_enregistrer": "Enregistrer",
     "antique_annuler": "Annuler",
-
     "antique_liste_antiques": "Liste des antiques",
     "antique_cree_le": "Crée le: ",
-
     "modifier": "Modifier",
     "supprimer": "Supprimer",
-
     "antique_offertpar": "Offert par",
     "antique_prix_min": "Avec comme minimum: ",
     "antique_offres": "Offres: ",
     "antique_ajouterOffre": "Ajouter une offre",
     "antique_prixPropose": "Prix proposé: ",
     "antique_boutonProposer": "Proposer",
-
     "offre_les_offres": "Les offres: ",
     "offre_table_numero": "Numero",
     "offre_table_creele": "Crée le",
     "offre_table_prix": "Prix",
     "offre_table_action": "Action",
-
     "offre_ajouter1": "Ajouter une offre: ",
     "offre_ajouter2": "Ajouter votre offre: ",
     "Please confirm your password before continuing.": "Confirmer votre mot de passe avant de commencer",

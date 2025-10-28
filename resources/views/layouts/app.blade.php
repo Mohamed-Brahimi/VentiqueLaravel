@@ -1,4 +1,5 @@
-@php $locale = session()->get('locale'); @endphp
+
+
 
 <!DOCTYPE html>
 <html>
@@ -18,6 +19,12 @@
 </head>
 
 <body>
+    <!-- Debug info - remove after testing -->
+    <div style="position: fixed; top: 0; right: 0; background: red; color: white; padding: 5px; z-index: 9999; font-size: 12px;">
+        App Locale: {{ App::getLocale() }}<br>
+        Session: {{ session()->get('locale', 'not set') }}
+    </div>
+    
     <div id="global">
         <header id="headerSite">
             <div class="header-top">
@@ -33,7 +40,7 @@
                     <form method="GET" action="{{ url('/') }}">
                         <div class="form-group">
                             <input type="text" name="search" class="antique-searchbar typeahead form-control"
-                                id="antique_search" placeholder={{ __("index_recherche_placeholder") }} value="{{ request('search') }}">
+                                id="antique_search" placeholder="{{ __('index_recherche_placeholder') }}" value="{{ request('search') }}">
                         </div>
                     </form>
                 </div>
@@ -76,7 +83,7 @@
                 <!-- Language Dropdown -->
                 <div class="nav-item dropdown">
                     <a id="languageDropdown" class="nav-link dropdown-toggle" href="#" role="button">
-                        @switch($locale)
+                        @switch(App::getLocale())
                             @case('en')
                                 🇺🇸 English
                                 @break

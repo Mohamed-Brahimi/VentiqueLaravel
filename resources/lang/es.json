@@ -1,28 +1,27 @@
 {
-    "You are logged in!": "¡Has iniciado sesión!",
+    "You are logged in!": "¡Estás conectado!",
 
     "header_desc": "Bienvenido a nuestro sitio web",
-    "header_afficher_tous_offres": "Mostrar todas las ofertas de todos los artículos",
+    "header_afficher_tous_offres": "Mostrar todas las ofertas para todos los artículos",
     "header_message_connecte": "Hola",
-    "header_message_connecte2": ", cerrar sesión?",
-
+    "header_message_connecte2": ", ¿desconectarse?",
+    "footer_apropos": "Acerca de",
     "Connexion": "Iniciar sesión",
     "Inscription": "Registrarse",
     "Déconnexion": "Cerrar sesión",
-
-    "index_bouton_ajouter": "Agregar una antigüedad",
     "index_recherche_placeholder": "Buscar una antigüedad",
 
+    "index_bouton_ajouter": "Agregar una antigüedad",
     "footer_apropos": "Acerca de",
     "apropos_texte": "Esta página contendrá detalles sobre nuestro sitio.",
     "apropos_texte_image": "Subir una imagen",
 
     "apropos_noms": "Desarrolladores: Mohamed Arezki Brahimi, Adam Mahmoudi",
-    "apropos_cours1": "420-5H6 MO Aplicaciones web transaccionales.",
+    "apropos_cours1": "420-5H6 MO Aplicaciones Web Transaccionales.",
     "apropos_cours2": "Otoño 2025, Collège Montmorency.",
-    "apropos_interactions1": "Conectarse o registrarse en el sitio",
-    "apropos_interactions2": "Agregar, modificar o eliminar una antigüedad",
-    "apropos_interactions3": "Hacer ofertas sobre las antigüedades",
+    "apropos_interactions1": "Iniciar sesión o registrarse en el sitio",
+    "apropos_interactions2": "Agregar, editar o eliminar una antigüedad",
+    "apropos_interactions3": "Hacer ofertas en antigüedades",
 
     "antique_ajouter_article": "Agregar un artículo",
 
@@ -60,19 +59,5 @@
     "offre_table_action": "Acción",
 
     "offre_ajouter1": "Agregar una oferta: ",
-    "offre_ajouter2": "Agregue su oferta: ",
-    "Please confirm your password before continuing.": "Por favor confirme su contraseña antes de continuar.",
-    "Password": "Contraseña",
-    "Confirm Password": "Confirmar contraseña",
-    "Forgot your Password": "¿Olvidó su contraseña?",
-    "Reset Password": "Restablecer contraseña",
-    "Email Address": "Dirección de correo electrónico",
-    "Send Password Reset Link": "Enviar enlace para restablecer la contraseña",
-    "Login": "Iniciar sesión",
-    "Register": "Registrarse",
-    "Remember Me": "Recuérdame",
-    "A fresh verification link has been sent to your email address.": "Se ha enviado un nuevo enlace de verificación a su dirección de correo electrónico.",
-    "Before proceeding, please check your email for a verification link.": "Antes de continuar, por favor revise su correo electrónico para ver el enlace de verificación.",
-    "If you did not receive the email": "Si no recibió el correo electrónico",
-    "click here to request another": "Haga clic aquí para solicitar otro"
+    "offre_ajouter2": "Agregue su oferta: "
 }

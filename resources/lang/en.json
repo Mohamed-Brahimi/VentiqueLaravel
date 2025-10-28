@@ -5,14 +5,14 @@
     "header_afficher_tous_offres": "Show all offers for all items",
     "header_message_connecte": "Hello",
     "header_message_connecte2": ", log out?",
+    "footer_apropos": "About",
+    "index_recherche_placeholder": "Search for an antique",
 
     "Connexion": "Login",
     "Inscription": "Register",
     "Déconnexion": "Logout",
 
     "index_bouton_ajouter": "Add an antique",
-    "index_recherche_placeholder": "Search an antique",
-
     "footer_apropos": "About",
     "apropos_texte": "This page will contain details about our site.",
     "apropos_texte_image": "Upload an image",
