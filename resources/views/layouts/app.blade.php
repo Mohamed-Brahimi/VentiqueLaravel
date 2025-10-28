@@ -19,12 +19,7 @@
 </head>
 
 <body>
-    <!-- Debug info - remove after testing -->
-    <div style="position: fixed; top: 0; right: 0; background: red; color: white; padding: 5px; z-index: 9999; font-size: 12px;">
-        App Locale: {{ App::getLocale() }}<br>
-        Session: {{ session()->get('locale', 'not set') }}
-    </div>
-    
+   
     <div id="global">
         <header id="headerSite">
             <div class="header-top">

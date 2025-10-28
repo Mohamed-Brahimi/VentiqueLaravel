@@ -1,0 +1,36 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\Antique;
+use App\Models\User;
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+class antiqueModelTest extends TestCase
+{
+    use RefreshDatabase, WithFaker;
+
+    public function test_admin_can_create_antique()
+    {
+        $user = User::factory()->create([
+            'role' => User::admin_role
+        ]);
+
+        $this->actingAs($user);
+
+        $antique = Antique::create([
+            'name' => 'Test Antique',
+            'description' => 'This is a test antique description',
+            'price' => 150.75,
+            'user_id' => $user->id,
+            'image' => 'antiques/fake-test-image.jpg' // Fake image path
+        ]);
+
+        $AntiqueCree = Antique::find($antique->id);
+        $this->assertNotNull($AntiqueCree);
+        $this->assertEquals('Test Antique', $AntiqueCree->name);
+
+    }
+}

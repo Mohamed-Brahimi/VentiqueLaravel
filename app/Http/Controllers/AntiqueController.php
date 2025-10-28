@@ -46,7 +46,7 @@ class AntiqueController extends Controller
                 'name' => 'required',
                 'description' => 'required',
                 'price' => 'required',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif'
             ]
         );
 
@@ -86,17 +86,32 @@ class AntiqueController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate(
-            [
-                'name' => 'required',
-                'description' => 'required',
-                'price' => 'required',
-            ]
-        );
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric|min:0.01',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif'
+        ]);
+
         $antique = Antique::findOrFail($id);
-        $antique->update($request->all());
-        return redirect()->route('antiques.index')
-            ->with('success', 'antique edited successfully');
+        $data = $request->except('image');
+
+        // Handle image update
+        if ($request->hasFile('image')) {
+            // Delete old image if it exists
+            if ($antique->image && Storage::disk('public')->exists($antique->image)) {
+                Storage::disk('public')->delete($antique->image);
+            }
+
+            // Store new image
+            $imagePath = $request->file('image')->store('antiques', 'public');
+            $data['image'] = $imagePath;
+        }
+
+        $antique->update($data);
+
+        return redirect()->route('antiques.show', $antique->id)
+            ->with('success', 'Antique modifiée avec succès');
     }
 
     /**
