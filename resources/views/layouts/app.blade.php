@@ -43,11 +43,7 @@
                 <!-- Authentication Links -->
                 <ul class="navbar-nav">
                     @if (Auth::user())
-                        @if (Auth::user()->role === 'ADMIN')
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('articles.index') }}">Espace Admin</a>
-                            </li>
-                        @endif
+                      
                         
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button">
