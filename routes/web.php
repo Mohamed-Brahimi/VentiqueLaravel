@@ -12,14 +12,21 @@ Route::middleware(['auth' /* , 'verified' */])->group(function () {
         "offers" => OfferController::class
     ]);
 });
+
 // Public routes
 Route::get('/', [AntiqueController::class, 'index']);
 Route::post('/autocomplete', [AntiqueController::class, 'autocomplete'])->name('autocomplete');
 
+// Add the apropos page route
+Route::get('/apropos', function () {
+    return view('apropos');
+})->name('apropos');
 
 Auth::routes(/* ['verify' => true] */);
 
 Route::get('lang/{locale}', [App\Http\Controllers\LocalizationController::class, 'index']);
+
+// Admin routes
 Route::get('/admin/antiques', [AntiqueController::class, 'index'])->middleware('admin')->name('articles.index');
 Route::get('/admin/antiques/create', [AntiqueController::class, 'create'])->middleware('admin')->name('articles.create');
 Route::post('/admin/antiques/store', [AntiqueController::class, 'store'])->middleware('admin')->name('articles.store');

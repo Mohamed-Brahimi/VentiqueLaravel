@@ -11,13 +11,13 @@
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   [Simple, fast routing engine](https://laravel.com/docs/routing).
+-   [Powerful dependency injection container](https://laravel.com/docs/container).
+-   Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+-   Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+-   Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+-   [Robust background job processing](https://laravel.com/docs/queues).
+-   [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
@@ -35,14 +35,14 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 
 ### Premium Partners
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+-   **[Vehikl](https://vehikl.com)**
+-   **[Tighten Co.](https://tighten.co)**
+-   **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+-   **[64 Robots](https://64robots.com)**
+-   **[Curotec](https://www.curotec.com/services/technologies/laravel)**
+-   **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+-   **[Redberry](https://redberry.international/laravel-development)**
+-   **[Active Logic](https://activelogic.com)**
 
 ## Contributing
 
@@ -59,3 +59,153 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Ventique - Antique Auction Platform
+
+Ventique is a Laravel-based web application for antique auctions where users can list antiques and make offers.
+
+### Features
+
+-   User registration and authentication
+-   Antique listing with image uploads
+-   Bidding system with offers
+-   Multi-language support (English, French, Spanish)
+-   Admin panel for management
+-   Responsive design
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies: `composer install`
+3. Copy `.env.example` to `.env`
+4. Generate application key: `php artisan key:generate`
+5. Configure your database in `.env`
+6. Run migrations: `php artisan migrate`
+7. Seed the database: `php artisan db:seed`
+8. Link storage: `php artisan storage:link`
+9. Start the server: `php artisan serve`
+
+### Email Verification Setup
+
+To enable email verification for user registration, follow these steps:
+
+#### 1. Configure Mail Settings
+
+Update your `.env` file with your mail configuration:
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=your-smtp-host
+MAIL_PORT=587
+MAIL_USERNAME=your-email@domain.com
+MAIL_PASSWORD=your-email-password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=your-email@domain.com
+MAIL_FROM_NAME="Ventique"
+```
+
+For development, you can use:
+
+```env
+MAIL_MAILER=log
+```
+
+This will log emails to `storage/logs/laravel.log` instead of sending them.
+
+#### 2. Enable Email Verification in User Model
+
+In [`app/Models/User.php`](app/Models/User.php), uncomment the `MustVerifyEmail` interface:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Contracts\Auth\MustVerifyEmail; // Uncomment this line
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+class User extends Authenticatable implements MustVerifyEmail // Add implements MustVerifyEmail
+{
+    // ... rest of the class
+}
+```
+
+#### 3. Enable Verified Middleware in Routes
+
+In [`routes/web.php`](routes/web.php), uncomment the `verified` middleware:
+
+```php
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::resources([
+        'antiques' => AntiqueController::class,
+        "offers" => OfferController::class
+    ]);
+});
+
+// Also update Auth routes
+Auth::routes(['verify' => true]); // Change this line
+```
+
+#### 6. Testing Email Verification
+
+1. **Development Testing**: Set `MAIL_MAILER=log` in `.env` and check `storage/logs/laravel.log` for verification emails
+2. **Production Testing**: Use a service like Mailtrap, SendGrid, or Mailgun
+
+#### 7. Handle Unverified Users
+
+After enabling verification:
+
+-   New users must verify their email before accessing protected routes
+-   Existing users may need to verify their emails
+-   Users will be redirected to `/email/verify` if not verified
+
+#### 8. Database Considerations
+
+The `email_verified_at` column already exists in your users table. If you need to reset verification status:
+
+```php
+// Mark all existing users as verified (optional)
+DB::table('users')->whereNull('email_verified_at')->update([
+    'email_verified_at' => now()
+]);
+```
+
+### Default Admin Account
+
+After seeding, you can login with:
+
+-   **Email**: admin@example.com
+-   **Password**: 123
+
+### Development Notes
+
+-   The application uses SQLite by default
+-   Image uploads are stored in `storage/app/public/`
+-   Language files are in `resources/lang/`
+-   Custom CSS is in `resources/css/app.css`
+
+### Testing
+
+Run the test suite:
+
+```bash
+php artisan test
+```
+
+### Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests
+5. Submit a pull request
+
+### License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+// Uncomment the line below to enable email verification
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -23,7 +24,18 @@ class User extends Authenticatable // implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'role', // Add role to fillable
     ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'role' => 'USER', // Set default role
+    ];
+
     protected $guarded = [
         'id'
     ];
@@ -50,10 +62,12 @@ class User extends Authenticatable // implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
     public function offer()
     {
         return $this->hasMany(Offer::class);
     }
+
     public function antique()
     {
         return $this->hasMany(Antique::class);
