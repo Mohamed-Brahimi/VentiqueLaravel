@@ -29,7 +29,7 @@ class UsermodelTest extends TestCase
 
     }
 
-    public function testIvalideRegistration()
+    public function testIsValidRegistration()
     {
 
         $response = $this->post('/register', [

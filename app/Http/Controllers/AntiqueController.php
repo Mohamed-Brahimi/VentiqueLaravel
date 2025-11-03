@@ -98,12 +98,7 @@ class AntiqueController extends Controller
 
         // Handle image update
         if ($request->hasFile('image')) {
-            // Delete old image if it exists
-            if ($antique->image && Storage::disk('public')->exists($antique->image)) {
-                Storage::disk('public')->delete($antique->image);
-            }
 
-            // Store new image
             $imagePath = $request->file('image')->store('antiques', 'public');
             $data['image'] = $imagePath;
         }
