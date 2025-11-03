@@ -4,20 +4,19 @@ use App\Http\Controllers\AntiqueController;
 use App\Http\Controllers\OfferController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth' /* , 'verified' */])->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::resources([
         'antiques' => AntiqueController::class,
-        "offers" => OfferController::class
     ]);
 });
-
-// Public routes
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 Route::get('/', [AntiqueController::class, 'index']);
 Route::post('/autocomplete', [AntiqueController::class, 'autocomplete'])->name('autocomplete');
 
-// Add the apropos page route
 Route::get('/apropos', function () {
     return view('apropos');
 })->name('apropos');

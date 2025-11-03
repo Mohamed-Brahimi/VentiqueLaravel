@@ -7,13 +7,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable // implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
-    const user_role = 'USER';
-    const admin_role = 'ADMIN';
+    use HasFactory, Notifiable, HasApiTokens;
+
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +24,6 @@ class User extends Authenticatable // implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'role', // Add role to fillable
     ];
 
     /**
@@ -33,7 +32,6 @@ class User extends Authenticatable // implements MustVerifyEmail
      * @var array
      */
     protected $attributes = [
-        'role' => 'USER', // Set default role
     ];
 
     protected $guarded = [

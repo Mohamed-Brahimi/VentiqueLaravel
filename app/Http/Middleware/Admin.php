@@ -26,11 +26,7 @@ class Admin
         }
 
         // utilisateur authentifié mais pas comme administrateur
-        if ($user->role !== User::admin_role) {
-            return redirect()->route('home');
 
-        }
-        //dd($user->role);
         return $next($request);
     }
 }

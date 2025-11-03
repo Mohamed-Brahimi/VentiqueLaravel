@@ -21,7 +21,7 @@
                 <p class="antique-enchere-prix">@lang("antique_prix_min") {{ $antique->price }} $</p>
 
                 <div class="antique-enchere-options">
-                    @if(Auth::check() && (Auth::user()->id == $antique->user_id || Auth::user()->role === 'ADMIN'))
+                    @if(Auth::check() && (Auth::user()->id == $antique->user_id))
 
                         <a href="{{ url('antiques/' . $antique->id . '/edit') }}" class="btn btn-info"
                             style="margin-right: .5rem;">@lang("modifier")</a>

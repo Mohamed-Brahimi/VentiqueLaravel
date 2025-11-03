@@ -15,7 +15,6 @@ class ArticleControllerTest extends TestCase
     public function test_admin_can_create_antique()
     {
         $user = User::factory()->create([
-            'role' => User::admin_role
         ]);
 
         $this->actingAs($user);
@@ -36,7 +35,6 @@ class ArticleControllerTest extends TestCase
     public function test_user_can_create_antique()
     {
         $user = User::factory()->create([
-            'role' => User::user_role
         ]);
 
         $this->actingAs($user);
@@ -57,7 +55,6 @@ class ArticleControllerTest extends TestCase
     public function test_invalide_creation()
     {
         $user = User::factory()->create([
-            'role' => User::user_role
         ]);
 
         $this->actingAs($user);

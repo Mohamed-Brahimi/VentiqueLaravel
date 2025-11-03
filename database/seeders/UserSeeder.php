@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
 
             $user->email = $faker->unique()->email();
             $user->password = bcrypt('123456');
-            $user->role = 'user';
+
             $user->save();
 
         }
@@ -28,6 +28,5 @@ class UserSeeder extends Seeder
         $user->name = 'Admin';
         $user->email = 'admin@example.com';
         $user->password = bcrypt('123');
-        $user->role = 'ADMIN';
     }
 }

@@ -21,7 +21,6 @@ class RouteTest extends TestCase
     public function testAccessCreationWithUserRole()
     {
         $user = User::factory()->create([
-            'role' => 'USER'
         ]);
 
         $this->actingAs($user);
@@ -33,7 +32,6 @@ class RouteTest extends TestCase
     {
         // Create an admin user
         $admin = User::factory()->create([
-            'role' => 'ADMIN'
         ]);
 
         $this->actingAs($admin);
