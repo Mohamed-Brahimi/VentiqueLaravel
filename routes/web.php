@@ -4,6 +4,10 @@ use App\Http\Controllers\AntiqueController;
 use App\Http\Controllers\OfferController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('{any}', function () {
+  return view('monopage');
+})->where('any', '.*');
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -22,6 +26,8 @@ Route::get('/apropos', function () {
 })->name('apropos');
 
 Auth::routes(/* ['verify' => true] */);
+
+
 
 Route::get('lang/{locale}', [App\Http\Controllers\LocalizationController::class, 'index']);
 
