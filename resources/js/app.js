@@ -8,4 +8,8 @@ import router from "./router";
 const app = createApp(App);
 app.config.globalProperties.$axios = axios;
 app.use(router);
-app.mount("#app");
+
+// wait for DOM if script may run before <div id="app"> is parsed
+document.addEventListener("DOMContentLoaded", () => {
+    app.mount("#app");
+});

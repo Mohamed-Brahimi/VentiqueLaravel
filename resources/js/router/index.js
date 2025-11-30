@@ -5,12 +5,13 @@ import Dashboard from "../pages/Dashboard.vue";
 import Articles from "../components/Articles.vue";
 import Apropos from "../pages/Apropos.vue";
 import Register from "../components/Register.vue";
+import Antiques from "../components/Antiques.vue";
 
 export const routes = [
     {
         name: "home",
         path: "/",
-        component: Home,
+        component: Antiques,
     },
     {
         name: "dashboard",
@@ -26,6 +27,11 @@ export const routes = [
         name: "register",
         path: "/register",
         component: Register,
+    },
+    {
+        name: "antiques",
+        path: "/antiques",
+        component: Antiques,
     },
 ];
 

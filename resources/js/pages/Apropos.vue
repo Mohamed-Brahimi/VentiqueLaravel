@@ -37,7 +37,7 @@
                     <p>
                         • Bootstrap & CSS personnalisé (Interface utilisateur)
                     </p>
-                    <p>• JavaScript & jQuery (Interactions dynamiques)</p>
+                    <p>• JavaScrip & jQuery (Interactions dynamiques)</p>
                 </div>
             </section>
 
