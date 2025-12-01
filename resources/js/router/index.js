@@ -50,6 +50,10 @@ export const routes = [
         name: "antique-details",
         path: "/antiques/:id",
         component: AntiqueDetail,
+    },{
+        name: "edit-antique",
+        path: "/antiques/edit/:id",
+        component: AntiqueDetail,
     },
 ];
 

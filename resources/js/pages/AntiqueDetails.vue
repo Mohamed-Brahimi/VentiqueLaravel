@@ -4,9 +4,7 @@
             Chargement...
         </div>
         
-        <div v-else-if="error" class="error">
-            <p>{{ error }}</p>
-        </div>
+        
         
         <div v-else-if="antique" class="antique-details">
             <div class="details-grid">
@@ -39,16 +37,8 @@
 
                     <div class="action-buttons">
                         <button 
-                            v-if="isLoggedIn && !isOwner"
-                            @click="makeOffer" 
-                            class="btn btn-primary"
-                        >
-                            Faire une offre
-                        </button>
-                        
-                        <button 
                             v-if="isOwner"
-                            @click="editAntique" 
+                            @click="showEditModal = true" 
                             class="btn btn-secondary"
                         >
                             Modifier
@@ -61,29 +51,20 @@
                         >
                             Supprimer
                         </button>
-
-                        <p v-if="!isLoggedIn" class="login-message">
-                            <router-link to="/login">Connectez-vous</router-link> pour faire une offre
-                        </p>
-                    </div>
-
-                    <div v-if="antique.offers && antique.offers.length > 0" class="offers-section">
-                        <h3>Offres reçues ({{ antique.offers.length }})</h3>
-                        <ul class="offers-list">
-                            <li 
-                                v-for="offer in antique.offers" 
-                                :key="offer.id"
-                                class="offer-item"
-                            >
-                                <span class="offer-amount">{{ formatPrice(offer.amount) }}</span>
-                                <span class="offer-user">par {{ offer.user?.name || 'Anonyme' }}</span>
-                                <span class="offer-date">{{ formatDate(offer.created_at) }}</span>
-                            </li>
-                        </ul>
+                        
+                    
                     </div>
                 </div>
             </div>
         </div>
+        
+        <!-- Add Edit Modal -->
+        <EditAntique 
+            :show="showEditModal" 
+            :antiqueId="antique?.id"
+            @close="showEditModal = false"
+            @success="handleEditSuccess"
+        />
     </div>
 </template>
 
@@ -91,6 +72,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import api from '../axios';
+import EditAntique from '../components/EditAntique.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -98,6 +80,7 @@ const router = useRouter();
 const antique = ref(null);
 const loading = ref(true);
 const error = ref(null);
+const showEditModal = ref(false);
 
 const isLoggedIn = computed(() => {
     return window.Laravel?.isLoggedIn || localStorage.getItem('token');
@@ -106,9 +89,47 @@ const isLoggedIn = computed(() => {
 const isOwner = computed(() => {
     if (!antique.value || !isLoggedIn.value) return false;
     
-    const userId = window.Laravel?.user?.id;
+    let userId = null;
+    
+    if (window.Laravel?.user?.id) {
+        userId = window.Laravel.user.id;
+    } 
+    else {
+        const userDataString = localStorage.getItem('user');
+        if (userDataString) {
+            try {
+                const userData = JSON.parse(userDataString);
+                if (!userData.id) {
+                    fetchCurrentUser();
+                } else {
+                    userId = userData.id;
+                }
+            } catch (e) {
+                console.error('Error parsing user data:', e);
+            }
+        }
+    }
+    
+    console.log('Checking ownership - User ID:', userId, 'Antique User ID:', antique.value.user_id);
     return userId && antique.value.user_id === userId;
 });
+
+const fetchCurrentUser = async () => {
+    try {
+        const response = await api.get('/api/user');
+        if (response.data) {
+            // Update localStorage with full user data including ID
+            localStorage.setItem('user', JSON.stringify(response.data));
+            
+            // Update window.Laravel
+            if (window.Laravel) {
+                window.Laravel.user = response.data;
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching current user:', error);
+    }
+};
 
 const fetchAntiqueDetails = async () => {
     loading.value = true;
@@ -133,6 +154,27 @@ const fetchAntiqueDetails = async () => {
     }
 };
 
+const handleEditSuccess = () => {
+    showEditModal.value = false;
+    // Refresh the antique details
+    fetchAntiqueDetails();
+};
+
+const deleteAntique = async () => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette antiquité ?')) {
+        return;
+    }
+    
+    try {
+        await api.delete(`/api/antiques/${antique.value.id}`);
+        alert('Antiquité supprimée avec succès');
+        router.push('/');
+    } catch (err) {
+        console.error('Error deleting antique:', err);
+        alert('Erreur lors de la suppression');
+    }
+};
+
 const formatPrice = (price) => {
     return new Intl.NumberFormat('fr-CA', {
         style: 'currency',
@@ -153,31 +195,12 @@ const handleImageError = (event) => {
     event.target.src = '/images/default-antique.jpg';
 };
 
-const makeOffer = () => {
-    alert('Fonctionnalité "Faire une offre" à venir!');
-};
-
-const editAntique = () => {
-    router.push(`/antiques/edit/${antique.value.id}`);
-};
-
-const deleteAntique = async () => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cette antiquité?')) {
-        return;
-    }
-    
-    try {
-        await api.delete(`/api/antiques/${antique.value.id}`);
-        alert('Antiquité supprimée avec succès');
-        router.push('/');
-    } catch (err) {
-        console.error('Error deleting antique:', err);
-        alert('Erreur lors de la suppression');
-    }
-};
-
 onMounted(() => {
     fetchAntiqueDetails();
+    // Fetch current user if logged in but user data is incomplete
+    if (isLoggedIn.value) {
+        fetchCurrentUser();
+    }
 });
 </script>
 

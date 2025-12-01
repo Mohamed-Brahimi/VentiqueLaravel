@@ -49,6 +49,11 @@
                         </label>
                     </div>
 
+                    <div class="mb-4">
+                        <!-- reCAPTCHA widget container -->
+                        <div ref="recaptchaWrapper"></div>
+                    </div>
+
                     <div class="mb-0">
                         <button type="submit" class="btn auth-btn-primary" :disabled="loading">
                             {{ loading ? 'Connexion...' : 'Se connecter' }}
@@ -65,7 +70,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import api from '../axios';
 import { useRouter } from 'vue-router';
 
@@ -77,8 +82,88 @@ const remember = ref(false);
 const error = ref(null);
 const loading = ref(false);
 
+const recaptchaWidgetId = ref(null);
+const recaptchaToken = ref(null);
+const recaptchaWrapper = ref(null);
+
+const SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || 
+                 window.RECAPTCHA_SITE_KEY || 
+                 '6LeoKB0sAAAAAJpRB-f3AYCZKLDn9v1H-wJd0wYf';
+
+console.log('reCAPTCHA Site Key:', SITE_KEY);
+
+function renderRecaptcha() {
+    if (!window.grecaptcha || !recaptchaWrapper.value) {
+        console.log('reCAPTCHA not ready or wrapper missing');
+        return;
+    }
+    
+    if (!SITE_KEY || SITE_KEY.includes('example')) {
+        console.error('reCAPTCHA site key is missing or invalid');
+        error.value = 'Configuration reCAPTCHA manquante';
+        return;
+    }
+    
+    if (recaptchaWidgetId.value !== null) {
+        try {
+            window.grecaptcha.reset(recaptchaWidgetId.value);
+        } catch (e) {
+            console.error('reCAPTCHA reset error:', e);
+        }
+        return;
+    }
+    
+    try {
+        recaptchaWidgetId.value = window.grecaptcha.render(recaptchaWrapper.value, {
+            'sitekey': SITE_KEY,
+            'callback': (token) => {
+                recaptchaToken.value = token;
+                console.log('reCAPTCHA token received');
+            },
+            'expired-callback': () => {
+                recaptchaToken.value = null;
+                console.log('reCAPTCHA token expired');
+            }
+        });
+        console.log('reCAPTCHA rendered successfully');
+    } catch (e) {
+        console.error('reCAPTCHA render error:', e);
+        error.value = 'Erreur de chargement reCAPTCHA';
+    }
+}
+
+onMounted(() => {
+    let tries = 0;
+    const interval = setInterval(() => {
+        if (window.grecaptcha && window.grecaptcha.render) {
+            renderRecaptcha();
+            clearInterval(interval);
+        } else if (tries++ > 20) {
+            clearInterval(interval);
+            console.warn('reCAPTCHA not loaded after 6 seconds');
+            error.value = 'reCAPTCHA n\'a pas pu être chargé';
+        }
+    }, 300);
+});
+
+onBeforeUnmount(() => {
+    if (recaptchaWidgetId.value !== null && window.grecaptcha && window.grecaptcha.reset) {
+        try {
+            window.grecaptcha.reset(recaptchaWidgetId.value);
+        } catch (e) {
+            console.error('reCAPTCHA cleanup error:', e);
+        }
+    }
+});
+
 async function handleLogin() {
     error.value = null;
+    
+    if (!recaptchaToken.value) {
+        error.value = 'Merci de confirmer que vous n\'êtes pas un robot.';
+        return;
+    }
+    
     loading.value = true;
 
     try {
@@ -90,24 +175,44 @@ async function handleLogin() {
         const res = await api.post('/api/login', {
             email: email.value,
             password: password.value,
+            'g-recaptcha-response': recaptchaToken.value
         });
 
         console.log('Login response:', res.data);
 
         if (res.data.success && res.data.data) {
-            // Store token
             const token = res.data.data.token;
             if (token) {
                 localStorage.setItem('token', token);
+                api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             }
             
-            // Redirect to home
-            window.location.href = '/';
+            try {
+                const userResponse = await api.get('/api/user');
+                const userData = userResponse.data;
+                localStorage.setItem('user', JSON.stringify(userData));
+                
+                if (window.Laravel) {
+                    window.Laravel.isLoggedIn = true;
+                    window.Laravel.user = userData;
+                }
+                
+                console.log('User data stored:', userData);
+            } catch (userErr) {
+                console.error('Error fetching user data:', userErr);
+            }
+            
+            console.log('Login successful, redirecting...');
+            alert('Connexion réussie!');
+            
+            window.location.reload();
+            
         } else {
             error.value = res.data.message || 'Erreur de connexion';
         }
     } catch (err) {
         console.error('Login error:', err);
+        console.error('Error response:', err.response);
         
         if (err.response?.status === 401) {
             error.value = 'Email ou mot de passe incorrect';
@@ -121,6 +226,16 @@ async function handleLogin() {
         }
     } finally {
         loading.value = false;
+        
+        // Reset reCAPTCHA
+        if (window.grecaptcha && recaptchaWidgetId.value !== null) {
+            try {
+                window.grecaptcha.reset(recaptchaWidgetId.value);
+                recaptchaToken.value = null;
+            } catch (e) {
+                console.error('reCAPTCHA reset error:', e);
+            }
+        }
     }
 }
 </script>
@@ -142,6 +257,8 @@ async function handleLogin() {
     border: 3px solid #2e1d19;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(46, 29, 25, 0.1);
+    position: relative;
+    z-index: 1;
 }
 
 .auth-card-header {
@@ -157,6 +274,7 @@ async function handleLogin() {
 
 .auth-card-body {
     padding: 2rem;
+    overflow: visible;
 }
 
 .auth-form-label {
@@ -256,5 +374,36 @@ async function handleLogin() {
 
 .mb-0 {
     margin-bottom: 0;
+}
+
+.mb-4:has([ref="recaptchaWrapper"]) {
+    margin-bottom: 2rem;
+    min-height: 80px;
+    overflow: visible;
+}
+
+[ref="recaptchaWrapper"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible !important;
+    transform: scale(1);
+    transform-origin: center;
+}
+
+:deep(iframe[src*="recaptcha"]) {
+    overflow: visible !important;
+    position: relative !important;
+    z-index: 1000 !important;
+}
+
+:deep(.g-recaptcha) {
+    overflow: visible !important;
+    transform: scale(1);
+    transform-origin: 0 0;
+}
+
+:deep(body > div[style*="z-index"]) {
+    z-index: 10000 !important;
 }
 </style>

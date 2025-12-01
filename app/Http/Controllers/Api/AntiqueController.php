@@ -26,7 +26,6 @@ class AntiqueController extends Controller
             
             $antiques = $query->orderBy('created_at', 'desc')->get();
             
-            // Transform the data to include proper image URLs
             $antiques = $antiques->map(function ($antique) {
                 return [
                     'id' => $antique->id,
@@ -46,9 +45,7 @@ class AntiqueController extends Controller
             });
             
             \Log::info('Returning ' . $antiques->count() . ' antiques');
-            
-            // Return as simple array
-            return response()->json($antiques, 200);
+                    return response()->json($antiques, 200);
             
         } catch (\Exception $e) {
             \Log::error('Error fetching antiques: ' . $e->getMessage());
@@ -92,28 +89,22 @@ class AntiqueController extends Controller
         }
     }
     
-    /**
-     * Get proper image URL for an antique
-     */
+
     private function getImageUrl($imagePath)
     {
         if (!$imagePath) {
             return asset('images/default-antique.jpg');
         }
         
-        // If it's already a full URL (from Faker), return as is
         if (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://')) {
             return $imagePath;
         }
-        
-        // If it's a local storage path
-        return asset('storage/' . $imagePath);
+            return asset('storage/' . $imagePath);
     }
 
     public function store(Request $request)
     {
         try {
-            // Validate input
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'description' => 'required|string',
@@ -129,13 +120,11 @@ class AntiqueController extends Controller
                 ], 422);
             }
 
-            // Handle image upload
             $imagePath = null;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('antiques', 'public');
             }
 
-            // Create antique
             $antique = Antique::create([
                 'name' => $request->name,
                 'description' => $request->description,
@@ -162,6 +151,78 @@ class AntiqueController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Erreur lors de la création de l\'antiquité',
+                'error' => config('app.debug') ? $e->getMessage() : null
+            ], 500);
+        }
+    }
+        public function destroy(string $id)
+    {
+
+        $antique = Antique::findOrFail($id);
+        if ($antique->image) {
+            Storage::disk('public')->delete($antique->image);
+        }
+        $antique->delete();
+        return response()->json(null, 204);
+    }
+    public function update(Request $request, $id)
+    {
+        try {
+            $antique = Antique::findOrFail($id);
+            if ($antique->user_id !== auth()->id()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Non autorisé'
+                ], 403);
+            }
+            
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'description' => 'required|string',
+                'price' => 'required|numeric|min:0.01',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Erreur de validation',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $antique->name = $request->name;
+            $antique->description = $request->description;
+            $antique->price = $request->price;
+
+            if ($request->hasFile('image')) {
+                if ($antique->image) {
+                    Storage::disk('public')->delete($antique->image);
+                }
+                $imagePath = $request->file('image')->store('antiques', 'public');
+                $antique->image = $imagePath;
+            }
+
+            $antique->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Antiquité modifiée avec succès',
+                'data' => [
+                    'id' => $antique->id,
+                    'name' => $antique->name,
+                    'description' => $antique->description,
+                    'price' => $antique->price,
+                    'image_url' => $this->getImageUrl($antique->image),
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            \Log::error('Antique update error: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la modification',
                 'error' => config('app.debug') ? $e->getMessage() : null
             ], 500);
         }

@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('antiques/edit/{id}', [AntiqueController::class, 'edit']);
     Route::put('antiques/update/{id}', [AntiqueController::class, 'update']);
     Route::delete('antiques/{id}', [AntiqueController::class, 'destroy']);
-    
+
     Route::post('logout', function (Request $request) {
         $request->user()->currentAccessToken()->delete();
         return response()->json(['success' => true, 'message' => 'Logged out successfully']);

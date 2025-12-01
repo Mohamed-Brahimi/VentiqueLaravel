@@ -88,12 +88,36 @@ export default {
         };
     },
     created() {
-        if (window.Laravel && window.Laravel.isLoggedIn) {
-            this.isLoggedIn = true;
-            this.userName = window.Laravel.user ? window.Laravel.user.name : 'User';
-        }
+        this.checkAuthStatus();
     },
     methods: {
+        checkAuthStatus() {
+            // Check multiple sources for auth state
+            const token = localStorage.getItem('token');
+            const userData = localStorage.getItem('user');
+            const laravelAuth = window.Laravel?.isLoggedIn;
+            
+            if (token || laravelAuth) {
+                this.isLoggedIn = true;
+                
+                if (userData) {
+                    try {
+                        const user = JSON.parse(userData);
+                        this.userName = user.name;
+                    } catch (e) {
+                        console.error('Error parsing user data:', e);
+                    }
+                } else if (window.Laravel?.user) {
+                    this.userName = window.Laravel.user.name;
+                }
+                
+                console.log('User is logged in:', this.userName);
+            } else {
+                this.isLoggedIn = false;
+                this.userName = '';
+            }
+        },
+        
         logout(e) {
             e.preventDefault();
             
@@ -104,28 +128,30 @@ export default {
                             this.isLoggedIn = false;
                             this.userName = '';
                             localStorage.removeItem('token');
+                            localStorage.removeItem('user');
+                            delete api.defaults.headers.common['Authorization'];
+                            
+                            if (window.Laravel) {
+                                window.Laravel.isLoggedIn = false;
+                                window.Laravel.user = null;
+                            }
+                            
                             window.location.href = "/";
                         }
                     })
                     .catch((error) => {
                         console.error("Logout error:", error);
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
                         window.location.href = "/";
                     });
             });
         },
+        
         handleAddSuccess() {
             this.showAddModal = false;
-            // Refresh the current page to show new antique
-            if (this.$route.path === '/' || this.$route.path === '/antiques') {
-                window.location.reload();
-            } else {
-                this.$router.push('/');
-            }
+            this.$router.go(0);
         },
-        handleRefresh() {
-            // Method to handle refresh event from child components
-            window.location.reload();
-        }
     },
 };
 </script>
