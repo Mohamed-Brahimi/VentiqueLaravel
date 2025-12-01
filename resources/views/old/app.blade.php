@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html>
 
@@ -15,8 +12,7 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/ui-lightness/jquery-ui.css">
 
     <!-- Your styles -->
-    @viteReactRefresh
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css'])
 </head>
 
 <body>

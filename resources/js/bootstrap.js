@@ -12,6 +12,25 @@ import axios from "axios";
 window.axios = axios;
 
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+window.axios.defaults.withCredentials = true;
+const getCSRFToken = () => {
+    const metaTag = document.head.querySelector("meta[name=\"csrf-token\"]");
+    if (metaTag) {
+        return metaTag.content;
+    }
+    if (window.Laravel && window.Laravel.csrfToken) {
+        return window.Laravel.csrfToken;
+    }
+    return null;
+};
+
+const token = getCSRFToken();
+
+if (token) {
+    window.axios.defaults.headers.common["X-CSRF-TOKEN"] = token;
+} else {
+    console.warn("CSRF token not found");
+}
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

@@ -2,10 +2,12 @@ import { createWebHistory, createRouter } from "vue-router";
 
 import Home from "../pages/Home.vue";
 import Dashboard from "../pages/Dashboard.vue";
-import Articles from "../components/Articles.vue";
 import Apropos from "../pages/Apropos.vue";
-import Register from "../components/Register.vue";
+import Register from "../pages/Register.vue";
+import Login from "../pages/Login.vue";
 import Antiques from "../components/Antiques.vue";
+import AddAntique from "../components/AddAntique.vue";
+import AntiqueDetail from "../pages/AntiqueDetails.vue";
 
 export const routes = [
     {
@@ -29,9 +31,25 @@ export const routes = [
         component: Register,
     },
     {
+        name: "login",
+        path: "/login",
+        component: Login,
+    },
+    {
         name: "antiques",
         path: "/antiques",
         component: Antiques,
+    },
+    {
+        name: "add-antique",
+        path: "/antiques/create",
+        component: AddAntique,
+        meta: { requiresAuth: true }
+    },
+    {
+        name: "antique-details",
+        path: "/antiques/:id",
+        component: AntiqueDetail,
     },
 ];
 
@@ -40,12 +58,20 @@ const router = createRouter({
     routes: routes,
 });
 
+// Navigation guard to protect routes
 router.beforeEach((to, from, next) => {
-    const token = localStorage.getItem("token");
-    if (to.meta.requiresAuth && !token) {
-        next({ name: "/login" }); // Rediriger vers la page de login si non authentifié
+    if (to.meta.requiresAuth) {
+        const isLoggedIn = window.Laravel?.isLoggedIn || localStorage.getItem('token');
+        
+        if (!isLoggedIn) {
+            alert('Veuillez vous connecter pour accéder à cette page.');
+            next('/login');
+        } else {
+            next();
+        }
     } else {
-        next(); // Continuer la navigation
+        next();
     }
 });
+
 export default router;

@@ -1,34 +1,18 @@
 <?php
 
 use App\Http\Controllers\AntiqueController;
-use App\Http\Controllers\OfferController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// API autocomplete endpoint (used by Vue SPA)
+Route::match(['get', 'post'], '/autocomplete', [AntiqueController::class, 'autocomplete'])->name('autocomplete');
 
-    Route::resources([
-        'antiques' => AntiqueController::class,
-    ]);
-});
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-// Route::get('/', [AntiqueController::class, 'index']);
-// Route::post('/autocomplete', [AntiqueController::class, 'autocomplete'])->name('autocomplete');
-
-// Route::get('/apropos', function () {
-//     return view('apropos');
-// })->name('apropos');
-
-Auth::routes(/* ['verify' => true] */);
-
-
-
-Route::get('lang/{locale}', [App\Http\Controllers\LocalizationController::class, 'index']);
-
-// Catch-all route for the SPA — place last so it does not intercept API or other routes
-Route::get('{any}', function () {
+// Root route - serve monopage
+Route::get('/', function () {
     return view('monopage');
-})->where('any', '.*');
+})->name('home');
+
+// All other routes go to the Vue SPA (monopage)
+Route::get('/{any}', function () {
+    return view('monopage');
+})->where('any', '^(?!api).*$'); // Exclude API routes
 

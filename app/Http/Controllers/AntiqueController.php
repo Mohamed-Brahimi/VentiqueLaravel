@@ -119,26 +119,20 @@ class AntiqueController extends Controller
         return redirect()->route('antiques.index')
             ->with('success', 'antique deleted successfully');
     }
+
     public function autocomplete(Request $request)
     {
         $search = $request->input('search', '');
-        if (trim($search) === '') {
+
+        if (trim($search) === '' || strlen(trim($search)) < 2) {
             return response()->json([]);
         }
 
-        $antiques = Antique::orderBy('name', 'ASC')
-            ->select('id', 'name')
-            ->where('name', 'LIKE', '%' . $search . '%')
+        $antiques = Antique::where('name', 'LIKE', '%' . $search . '%')
+            ->orderBy('name', 'ASC')
             ->limit(10)
-            ->get();
+            ->get(['id', 'name']);
 
-        $response = $antiques->map(function ($antique) {
-            return [
-                'value' => $antique->id,
-                'label' => $antique->name,
-            ];
-        })->toArray();
-
-        return response()->json($response);
+        return response()->json($antiques);
     }
 }

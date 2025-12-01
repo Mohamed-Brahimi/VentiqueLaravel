@@ -1,36 +1,31 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\AntiqueController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RegisterController;
-use App\Http\Controllers\Api\AntiqueController;
+use Illuminate\Http\Request;
 
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
+// Public API routes
 Route::post('register', [RegisterController::class, 'register']);
-
 Route::post('login', [RegisterController::class, 'login']);
-Route::get('/antiques', [AntiqueController::class, 'index']);
-Route::get('/antiques/{id}', [AntiqueController::class, 'show']);
 
+// Antiques API
+Route::get('antiques', [AntiqueController::class, 'index']);
+Route::get('antiques/{id}', [AntiqueController::class, 'show']);
+
+// Protected API routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('antiques/', [AntiqueController::class, 'store']);
+    Route::post('antiques', [AntiqueController::class, 'store']);
     Route::get('antiques/edit/{id}', [AntiqueController::class, 'edit']);
     Route::put('antiques/update/{id}', [AntiqueController::class, 'update']);
     Route::delete('antiques/{id}', [AntiqueController::class, 'destroy']);
-
-});
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    
+    Route::post('logout', function (Request $request) {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['success' => true, 'message' => 'Logged out successfully']);
+    });
+    
+    Route::get('user', function (Request $request) {
+        return $request->user();
+    });
 });
