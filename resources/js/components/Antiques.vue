@@ -51,11 +51,11 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import api from '../axios';
 
 const route = useRoute();
-const router = useRouter();
+const emit = defineEmits(['show-antique-details']);
 const antiques = ref([]);
 const loading = ref(true);
 const error = ref(null);
@@ -103,7 +103,7 @@ const handleImageError = (event) => {
 };
 
 const viewDetails = (id) => {
-    router.push(`/antiques/${id}`);
+    emit('show-antique-details', id);
 };
 
 // Watch for search query changes in URL

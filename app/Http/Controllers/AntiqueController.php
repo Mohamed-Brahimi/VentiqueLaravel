@@ -131,7 +131,7 @@ class AntiqueController extends Controller
         $antiques = Antique::where('name', 'LIKE', '%' . $search . '%')
             ->orderBy('name', 'ASC')
             ->limit(10)
-            ->get(['id', 'name']);
+            ->get(['id', 'name', 'price']); 
 
         return response()->json($antiques);
     }

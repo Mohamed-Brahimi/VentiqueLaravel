@@ -8,30 +8,27 @@
                 <p id="descSite">Bienvenue sur notre site web</p>
             </div>
 
-            <!-- Add SearchBar component -->
             <SearchBar />
 
             <nav class="header-nav">
                 <ul class="navbar-nav">
-                    <!-- Show these links when user is NOT logged in -->
                     <div v-if="!isLoggedIn">
                         <li class="nav-item">
-                            <router-link to="/login" class="nav-link">
+                            <a @click="showLoginModal = true" class="nav-link" style="cursor: pointer">
                                 Connexion
-                            </router-link>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/register" class="nav-link">
+                            <a @click="showRegisterModal = true" class="nav-link" style="cursor: pointer">
                                 Inscription
-                            </router-link>
+                            </a>
                         </li>
                     </div>
 
-                    <!-- Show these links when user IS logged in -->
                     <div v-else>
                         <li class="nav-item">
                             <a @click="showAddModal = true" class="nav-link nav-link-add" style="cursor: pointer">
-                                 Ajouter une antiquité
+                                 + Ajouter une antiquité
                             </a>
                         </li>
                         <li class="nav-item">
@@ -49,13 +46,34 @@
             </nav>
         </header>
 
-        <router-view @refresh-antiques="handleRefresh" />
+        <router-view @show-antique-details="handleShowAntiqueDetails" />
         
-        <!-- Add Modal Component -->
+        <!-- Modals -->
+        <LoginModal 
+            :show="showLoginModal" 
+            @close="showLoginModal = false"
+            @success="handleLoginSuccess"
+            @switch-to-register="switchToRegister"
+        />
+        
+        <RegisterModal 
+            :show="showRegisterModal" 
+            @close="showRegisterModal = false"
+            @success="handleRegisterSuccess"
+            @switch-to-login="switchToLogin"
+        />
+        
         <AddAntique 
             :show="showAddModal" 
             @close="showAddModal = false"
             @success="handleAddSuccess"
+        />
+        
+        <AntiqueDetailsModal
+            :show="showDetailsModal"
+            :antiqueId="selectedAntiqueId"
+            @close="showDetailsModal = false"
+            @refresh="handleRefresh"
         />
         
         <div id="filler"></div>
@@ -70,21 +88,31 @@
 </template>
 
 <script>
-import SearchBar from './pages/SearchBar.vue';
+import LoginModal from './components/Login.vue';
+import RegisterModal from './components/Register.vue';
+import SearchBar from './components/SearchBar.vue';
 import AddAntique from './components/AddAntique.vue';
+import AntiqueDetailsModal from './components/AntiqueDetails.vue';
 import api from './axios';
 
 export default {
     name: "App",
     components: {
-        SearchBar,
+        LoginModal,
+        RegisterModal,
         AddAntique,
+        AntiqueDetailsModal,
+        SearchBar,
     },
     data() {
         return {
             isLoggedIn: false,
             userName: '',
             showAddModal: false,
+            showLoginModal: false,
+            showRegisterModal: false,
+            showDetailsModal: false,
+            selectedAntiqueId: null,
         };
     },
     created() {
@@ -92,7 +120,6 @@ export default {
     },
     methods: {
         checkAuthStatus() {
-            // Check multiple sources for auth state
             const token = localStorage.getItem('token');
             const userData = localStorage.getItem('user');
             const laravelAuth = window.Laravel?.isLoggedIn;
@@ -116,6 +143,16 @@ export default {
                 this.isLoggedIn = false;
                 this.userName = '';
             }
+        },
+        
+        handleShowAntiqueDetails(antiqueId) {
+            console.log('Opening antique details for ID:', antiqueId);
+            this.selectedAntiqueId = antiqueId;
+            this.showDetailsModal = true;
+        },
+        
+        handleRefresh() {
+            this.$router.go(0);
         },
         
         logout(e) {
@@ -150,7 +187,29 @@ export default {
         
         handleAddSuccess() {
             this.showAddModal = false;
-            this.$router.go(0);
+            this.handleRefresh();
+        },
+        
+        switchToRegister() {
+            this.showLoginModal = false;
+            this.showRegisterModal = true;
+        },
+        
+        switchToLogin() {
+            this.showRegisterModal = false;
+            this.showLoginModal = true;
+        },
+        
+        handleLoginSuccess() {
+            this.showLoginModal = false;
+            this.checkAuthStatus();
+            window.location.reload();
+        },
+        
+        handleRegisterSuccess() {
+            this.showRegisterModal = false;
+            this.showLoginModal = true;
+            alert('Inscription réussie! Veuillez vous connecter.');
         },
     },
 };

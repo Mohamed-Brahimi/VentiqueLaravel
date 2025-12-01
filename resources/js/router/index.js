@@ -3,11 +3,11 @@ import { createWebHistory, createRouter } from "vue-router";
 import Home from "../pages/Home.vue";
 import Dashboard from "../pages/Dashboard.vue";
 import Apropos from "../pages/Apropos.vue";
-import Register from "../pages/Register.vue";
-import Login from "../pages/Login.vue";
+import Register from "../components/Register.vue";
+import Login from "../components/Login.vue";
 import Antiques from "../components/Antiques.vue";
 import AddAntique from "../components/AddAntique.vue";
-import AntiqueDetail from "../pages/AntiqueDetails.vue";
+import AntiqueDetail from "../components/AntiqueDetails.vue";
 
 export const routes = [
     {
